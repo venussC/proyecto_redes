@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4AB6A9">
+
+    <!-- Círculo superior izquierdo -->
+    <View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/circle_top_left"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <!-- Círculo inferior derecho -->
+    <View
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:background="@drawable/circle_bottom_right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <!-- Logo y texto -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="Logo Curae" />
+
+        <TextView
+            android:layout_width="82dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.2"
+            android:text="CURAE"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

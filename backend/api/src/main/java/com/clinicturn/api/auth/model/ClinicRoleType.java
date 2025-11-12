@@ -2,6 +2,8 @@ package com.clinicturn.api.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -29,5 +31,18 @@ public enum ClinicRoleType {
             }
         }
         throw new IllegalArgumentException("Invalid Clinic Role Type Code: " + code);
+    }
+
+    @Converter(autoApply = true)
+    public static class ClinicRoleTypeConverter implements AttributeConverter<ClinicRoleType, String> {
+        @Override
+        public String convertToDatabaseColumn(ClinicRoleType attribute) {
+            return attribute != null ? attribute.getCode() : null;
+        }
+
+        @Override
+        public ClinicRoleType convertToEntityAttribute(String dbData) {
+            return dbData != null ? fromCode(dbData) : null;
+        }
     }
 }

@@ -23,7 +23,6 @@ public class ClinicRole {
     private Long id;
 
     @NotNull(message = "ClinicRole's code should not be null")
-    @Enumerated(EnumType.STRING)
     @Column(name = "code", nullable = false, length = 3)
     private ClinicRoleType code;
 

@@ -13,7 +13,7 @@ CREATE SCHEMA auth;
 
 CREATE TABLE auth.clinic_role (
     id bigint NOT NULL,
-    code character varying(3) NOT NULL
+    code character varying(3) NOT NULL,
     display_name character varying(50) NOT NULL
 );
 

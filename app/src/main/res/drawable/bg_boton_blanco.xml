@@ -2,10 +2,15 @@
     android:shape="rectangle">
 
     <!-- Color de fondo del botón -->
-    <solid android:color="#00897B" /> <!-- Verde azulado moderno -->
+    <solid android:color="#E0E0E0"/>
+    <!-- fondo blanco -->
 
     <!-- Bordes redondeados -->
-    <corners android:radius="10dp" />
+    <stroke
+        android:width="3dp"
+        android:color="@color/verde"/>
+
+    <corners android:radius="10dp"/>
 
     <!-- Sombra ligera -->
     <padding

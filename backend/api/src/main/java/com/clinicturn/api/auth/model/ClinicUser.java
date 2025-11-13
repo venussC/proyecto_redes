@@ -59,7 +59,6 @@ public class ClinicUser {
     @Column(name = "recuperation_token_exp_at")
     private LocalDateTime recuperationTokenExpAt;
 
-    @NotNull(message = "ClincUser's lastLoginAt should not be null")
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
 
@@ -74,6 +73,11 @@ public class ClinicUser {
     @PrePersist
     public void prePersist() {
         timestampsInitializer();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = getLocalChronoTime();
     }
 
     public void timestampsInitializer() {

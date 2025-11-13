@@ -363,7 +363,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/txtCalificaciontexto"
+                            android:id="@+id/txtCalitexto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -407,7 +407,8 @@
                 android:layout_marginTop="20dp"
                 android:alignmentMode="alignMargins"
                 android:columnCount="3"
-                android:rowCount="2">
+                android:rowCount="2"
+                >
 
                 <!-- Medicina General -->
                 <androidx.cardview.widget.CardView
@@ -431,7 +432,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_medicina_general"
+                            android:src="@drawable/medicinageneral"
                             app:srcCompat="@drawable/medicinageneral" />
 
                         <TextView
@@ -469,7 +470,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_dentista"
+                            android:src="@drawable/dentista"
                             app:srcCompat="@drawable/dentista" />
 
                         <TextView
@@ -478,7 +479,7 @@
                             android:layout_marginTop="8dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:gravity="center"
-                            android:text="Dentista"
+                            android:text="Dentista\n"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
@@ -507,7 +508,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_oftalmologia"
+                            android:src="@drawable/oftalmogia"
                             app:srcCompat="@drawable/oftalmogia" />
 
                         <TextView
@@ -516,9 +517,9 @@
                             android:layout_marginTop="8dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:gravity="center"
-                            android:text="Oftalmología"
+                            android:text="Oftalmología\n"
                             android:textColor="@color/black"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -545,7 +546,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_cardiologia"
+                            android:src="@drawable/cardiologia"
                             app:srcCompat="@drawable/cardiologia" />
 
                         <TextView
@@ -583,7 +584,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_farmacia"
+                            android:src="@drawable/farmacia"
                             app:srcCompat="@drawable/farmacia" />
 
                         <TextView
@@ -621,7 +622,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_pediatria"
+                            android:src="@drawable/pediatria"
                             app:srcCompat="@drawable/pediatria" />
 
                         <TextView

@@ -17,6 +17,10 @@ import java.time.temporal.ChronoUnit;
 @Builder
 @Entity
 @Table(schema = "auth", name = "refresh_token",
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = "fingerprint", name = "refresh_token_fingerprint_unique"),
+            @UniqueConstraint(columnNames = "token_hash", name = "refresh_token_token_hash_unique")
+        },
         indexes = {
             @Index(columnList = "user_id", name = "fk_refresh_token_clinic_user_idx")
         }
@@ -33,6 +37,10 @@ public class RefreshToken {
                 foreignKey = @ForeignKey(name = "fk_refresh_token_clinic_user")
     )
     private ClinicUser user;
+
+    @NotBlank(message = "RefreshToken's fingerprint should not be blank")
+    @Column(name = "fingerprint", nullable = false, length = 64)
+    private String fingerprint;
 
     @NotBlank(message = "RefreshToken's tokenHash should not be blank")
     @Column(name = "token_hash", nullable = false, length = 64)

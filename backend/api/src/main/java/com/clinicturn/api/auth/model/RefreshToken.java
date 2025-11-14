@@ -43,7 +43,7 @@ public class RefreshToken {
     private String fingerprint;
 
     @NotBlank(message = "RefreshToken's tokenHash should not be blank")
-    @Column(name = "token_hash", nullable = false, length = 64)
+    @Column(name = "token_hash", nullable = false, length = 100)
     private String tokenHash;
 
     @Builder.Default

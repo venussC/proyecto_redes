@@ -69,7 +69,7 @@ CREATE TABLE auth.refresh_token (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
     fingerprint character varying(64) NOT NULL,
-    token_hash character varying(64) NOT NULL,
+    token_hash character varying(100) NOT NULL,
     is_revoked boolean NOT NULL,
     expires_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL

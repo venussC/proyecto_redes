@@ -76,7 +76,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     private RefreshToken findByFingerprint(String fingerprint){
-        return repository.findByFingerPrint(fingerprint)
+        return repository.findByFingerprint(fingerprint)
                 // Resource Not Found
                 .orElseThrow(() -> new RuntimeException("Refresh Token not found with fingerprint provided"));
     }

@@ -4,8 +4,10 @@ import com.clinicturn.api.auth.dto.response.RefreshTokenResult;
 import com.clinicturn.api.auth.model.ClinicUser;
 import com.clinicturn.api.auth.model.RefreshToken;
 import com.clinicturn.api.auth.repository.RefreshTokenRepository;
+import com.clinicturn.api.auth.service.ClinicUserService;
 import com.clinicturn.api.auth.service.RefreshTokenService;
 import com.clinicturn.api.auth.utils.HashUtils;
+import com.clinicturn.api.security.adapter.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,7 @@ import java.util.Base64;
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final RefreshTokenRepository repository;
+    private final ClinicUserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${security.refresh-token.length}")
@@ -33,10 +36,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     @Transactional
-    public RefreshTokenResult create(ClinicUser user) {
+    public RefreshTokenResult create(CustomUserDetails userDetails) {
         String rawToken = generateRawToken();
 
-        RefreshToken refreshToken = buildRefreshToken(user, rawToken);
+        ClinicUser userEntity = userService.findByIdAndReturnEntity(userDetails.getId());
+
+        RefreshToken refreshToken = buildRefreshToken(userEntity, rawToken);
 
         RefreshToken saved = repository.save(refreshToken);
 

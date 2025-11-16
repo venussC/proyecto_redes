@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -45,9 +47,22 @@ public class ClinicRoleUserServiceImpl implements ClinicRoleUserService {
         return false;
     }
 
+    @Override
+    public List<ClinicRoleType> findRoleCodesByUserId(Long userId) {
+        List<ClinicRoleType> codes = repository.findRoleCodesByUserId(userId);
+        validateUserRolesNotEmpty(codes, userId);
+        return codes;
+    }
+
     private void validateRoleUserAlreadyExists(Long roleId, Long userId) {
         if (existsByRoleIdAndUserId(roleId, userId)) {
             throw new RuntimeException("Clinic Role User already exists for Role Id: " + roleId + "and User Id: " + userId);
+        }
+    }
+
+    private void validateUserRolesNotEmpty(List<ClinicRoleType> codes, Long userId) {
+        if (codes.isEmpty()) {
+            throw new RuntimeException("User with id " + userId + " has no assigned roles");
         }
     }
 }

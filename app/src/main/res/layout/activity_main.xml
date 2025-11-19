@@ -113,7 +113,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textViewespera"
+                            android:id="@+id/textDoctorAsignado"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -127,7 +127,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/txtTurnosFaltantes"
+                            android:id="@+id/txtNumeroConsultorio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

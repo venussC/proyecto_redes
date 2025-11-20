@@ -1,7 +1,9 @@
 package com.clinicturn.api.security.controller;
 
 import com.clinicturn.api.security.dto.request.LoginRequest;
+import com.clinicturn.api.security.dto.request.RefreshRequest;
 import com.clinicturn.api.security.dto.response.LoginResponse;
+import com.clinicturn.api.security.dto.response.RefreshResponse;
 import com.clinicturn.api.security.service.AuthManagerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         LoginResponse response = authManagerService.login(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> refresh(@Valid @RequestBody RefreshRequest request) {
+        RefreshResponse response = authManagerService.refresh(request);
         return ResponseEntity.ok(response);
     }
 }

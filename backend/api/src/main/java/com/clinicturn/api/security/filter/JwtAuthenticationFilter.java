@@ -34,10 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getTokenFromRequest(request);
 
+        if (token == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             Claims claims = jwtTokenProvider.parseClaims(token);
 
-            if (token != null && jwtTokenProvider.isValid(claims)) {
+            if (jwtTokenProvider.isValid(claims)) {
 
                 String username = jwtTokenProvider.getUsername(claims);
 

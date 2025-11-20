@@ -1,4 +1,9 @@
 package com.clinicturn.api.security.dto.response;
 
-public record RefreshResponse() {
-}
+import java.time.Instant;
+
+public record RefreshResponse(
+        String accessToken,
+        Instant expiresAt,
+        String refreshToken
+) {}

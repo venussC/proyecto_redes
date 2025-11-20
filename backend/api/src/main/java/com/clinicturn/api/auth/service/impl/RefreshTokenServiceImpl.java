@@ -75,7 +75,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return RefreshToken.builder()
                 .user(user)
                 .fingerprint(HashUtils.sha256(rawToken))
-                .tokenHash(passwordEncoder.encode(rawToken))
+                .tokenHash(HashUtils.sha256(rawToken))
                 .expiresAt(LocalDateTime.now().plusDays(expirationDays).truncatedTo(ChronoUnit.MICROS))
                 .build();
     }
@@ -98,8 +98,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     private void assertTokenMatch(String rawToken, RefreshToken entityToken) {
-        if (!passwordEncoder.matches(rawToken, entityToken.getTokenHash()))
-            // RefreshTokenMismatch
+        String rawTokenHash = HashUtils.sha256(rawToken);
+
+        if (!rawTokenHash.equals(entityToken.getTokenHash())) {
             throw new RuntimeException("Invalid refresh token");
+        }
     }
 }

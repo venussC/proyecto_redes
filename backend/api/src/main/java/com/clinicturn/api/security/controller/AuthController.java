@@ -5,15 +5,14 @@ import com.clinicturn.api.security.dto.request.LogoutRequest;
 import com.clinicturn.api.security.dto.request.RefreshRequest;
 import com.clinicturn.api.security.dto.response.LoginResponse;
 import com.clinicturn.api.security.dto.response.LogoutResponse;
+import com.clinicturn.api.security.dto.response.MeResponse;
 import com.clinicturn.api.security.dto.response.RefreshResponse;
 import com.clinicturn.api.security.service.AuthManagerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -37,6 +36,12 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(@Valid @RequestBody LogoutRequest request) {
         LogoutResponse response = authManagerService.logout(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<MeResponse> me(Authentication authentication) {
+        MeResponse response = authManagerService.me(authentication);
         return ResponseEntity.ok(response);
     }
 }

@@ -4,6 +4,7 @@ import com.clinicturn.api.security.dto.request.LoginRequest;
 import com.clinicturn.api.security.dto.request.LogoutRequest;
 import com.clinicturn.api.security.dto.request.RefreshRequest;
 import com.clinicturn.api.security.dto.response.LoginResponse;
+import com.clinicturn.api.security.dto.response.LogoutResponse;
 import com.clinicturn.api.security.dto.response.RefreshResponse;
 
 public interface AuthManagerService {
@@ -12,5 +13,5 @@ public interface AuthManagerService {
 
     RefreshResponse refresh(RefreshRequest request);
 
-    void logout(LogoutRequest request);
+    LogoutResponse logout(LogoutRequest request);
 }

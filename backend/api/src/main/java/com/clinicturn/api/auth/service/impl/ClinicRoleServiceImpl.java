@@ -5,6 +5,8 @@ import com.clinicturn.api.auth.model.ClinicRole;
 import com.clinicturn.api.auth.model.ClinicRoleType;
 import com.clinicturn.api.auth.repository.ClinicRoleRepository;
 import com.clinicturn.api.auth.service.ClinicRoleService;
+import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
+import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +34,12 @@ public class ClinicRoleServiceImpl implements ClinicRoleService {
     @Override
     public ClinicRole findByCode(ClinicRoleType code) {
         return repository.findByCode(code)
-                .orElseThrow(() -> new RuntimeException("Clinic Role not found with code: " + code.getCode()));
+                .orElseThrow(() -> new ResourceNotFoundException("Clinic Role not found with code: " + code.getCode()));
     }
 
     private void validateCodeAlreadyExists(ClinicRoleType code) {
         if (repository.existsByCode(code)) {
-            throw new RuntimeException("Clinic Role already exists with code: " + code.getCode());
+            throw new ResourceAlreadyExistsException("Clinic Role already exists with code: " + code.getCode());
         }
     }
 }

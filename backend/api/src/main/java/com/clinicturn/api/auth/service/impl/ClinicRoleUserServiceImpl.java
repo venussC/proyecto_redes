@@ -1,6 +1,7 @@
 package com.clinicturn.api.auth.service.impl;
 
 import com.clinicturn.api.auth.dto.request.CreateClinicRoleUserRequest;
+import com.clinicturn.api.auth.exception.EmptyRolesException;
 import com.clinicturn.api.auth.model.ClinicRole;
 import com.clinicturn.api.auth.model.ClinicRoleType;
 import com.clinicturn.api.auth.model.ClinicRoleUser;
@@ -9,6 +10,7 @@ import com.clinicturn.api.auth.repository.ClinicRoleUserRepository;
 import com.clinicturn.api.auth.service.ClinicRoleService;
 import com.clinicturn.api.auth.service.ClinicRoleUserService;
 import com.clinicturn.api.auth.service.ClinicUserService;
+import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,13 +58,13 @@ public class ClinicRoleUserServiceImpl implements ClinicRoleUserService {
 
     private void validateRoleUserAlreadyExists(Long roleId, Long userId) {
         if (existsByRoleIdAndUserId(roleId, userId)) {
-            throw new RuntimeException("Clinic Role User already exists for Role Id: " + roleId + "and User Id: " + userId);
+            throw new ResourceAlreadyExistsException("Clinic Role User already exists for Role Id: " + roleId + "and User Id: " + userId);
         }
     }
 
     private void validateUserRolesNotEmpty(List<ClinicRoleType> codes, Long userId) {
         if (codes.isEmpty()) {
-            throw new RuntimeException("User with id " + userId + " has no assigned roles");
+            throw new EmptyRolesException("User with id " + userId + " has no assigned roles");
         }
     }
 }

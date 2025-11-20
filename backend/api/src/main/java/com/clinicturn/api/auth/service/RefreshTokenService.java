@@ -11,4 +11,6 @@ public interface RefreshTokenService {
     void revoke(String rawToken);
 
     RefreshToken verifyAndGet(String rawToken);
+
+    void verifyAndRevoke(String rawToken);
 }

@@ -1,6 +1,9 @@
 package com.clinicturn.api.common.exception.handler;
 
 import com.clinicturn.api.common.dto.response.ApiErrorResponse;
+import com.clinicturn.api.common.exception.IdsMismatchException;
+import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
+import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> ValidationExceptionHandler(MethodArgumentNotValidException ex,
+    public ResponseEntity<ApiErrorResponse> validationExceptionHandler(MethodArgumentNotValidException ex,
                                                                        HttpServletRequest request) {
         List<ApiErrorResponse.FieldErrorDetail> fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
@@ -53,7 +56,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiErrorResponse> BadCredentialsExceptionHandler(BadCredentialsException ex,
+    public ResponseEntity<ApiErrorResponse> badCredentialsExceptionHandler(BadCredentialsException ex,
                                                                            HttpServletRequest request) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .title("Bad Credentials")
@@ -65,5 +68,50 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException ex,
+                                                                             HttpServletRequest request) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .title("Resource Not Found")
+                .status(HttpStatus.NOT_FOUND.value())
+                .detail(ex.getMessage())
+                .instance(request.getRequestURI())
+                .timestamp(Instant.now())
+                .errors(List.of())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> resourceAlreadyExistsExceptionHandler(ResourceAlreadyExistsException ex,
+                                                                             HttpServletRequest request) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .title("Resource Already Exists")
+                .status(HttpStatus.CONFLICT.value())
+                .detail(ex.getMessage())
+                .instance(request.getRequestURI())
+                .timestamp(Instant.now())
+                .errors(List.of())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(IdsMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> idsMismatchExceptionHandler(IdsMismatchException ex,
+                                                                                  HttpServletRequest request) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .title("Ids Mismatch")
+                .status(HttpStatus.CONFLICT.value())
+                .detail(ex.getMessage())
+                .instance(request.getRequestURI())
+                .timestamp(Instant.now())
+                .errors(List.of())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }

@@ -1,12 +1,15 @@
 package com.clinicturn.api.auth.service.impl;
 
 import com.clinicturn.api.auth.dto.response.RefreshTokenResult;
+import com.clinicturn.api.auth.exception.RefreshTokenAlreadyExpiredException;
+import com.clinicturn.api.auth.exception.RefreshTokenMismatchException;
 import com.clinicturn.api.auth.model.ClinicUser;
 import com.clinicturn.api.auth.model.RefreshToken;
 import com.clinicturn.api.auth.repository.RefreshTokenRepository;
 import com.clinicturn.api.auth.service.ClinicUserService;
 import com.clinicturn.api.auth.service.RefreshTokenService;
 import com.clinicturn.api.auth.utils.HashUtils;
+import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import com.clinicturn.api.security.adapter.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,6 +68,15 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return tokenEntity;
     }
 
+    @Override
+    @Transactional
+    public void verifyAndRevoke(String rawToken) {
+        RefreshToken tokenEntity = findByFingerprint(HashUtils.sha256(rawToken));
+        validateRefreshToken(rawToken, tokenEntity);
+        tokenEntity.setIsRevoked(true);
+        repository.save(tokenEntity);
+    }
+
     private String generateRawToken() {
         byte[] randomBytes = new byte[tokenLength];
         new SecureRandom().nextBytes(randomBytes);
@@ -82,8 +94,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private RefreshToken findByFingerprint(String fingerprint){
         return repository.findByFingerprint(fingerprint)
-                // Resource Not Found
-                .orElseThrow(() -> new RuntimeException("Refresh Token not found with fingerprint provided"));
+                .orElseThrow(() -> new ResourceNotFoundException("Refresh Token not found with fingerprint provided"));
     }
 
     private void validateRefreshToken(String rawToken, RefreshToken entityToken) {
@@ -93,15 +104,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private void assertTokenIsNotRevokedOrExpired(RefreshToken token) {
         if (token.getIsRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now().truncatedTo(ChronoUnit.MICROS)))
-            // RefreshTokenAlreadyExpired
-            throw new RuntimeException("Refresh token expired or revoked");
+            throw new RefreshTokenAlreadyExpiredException("Refresh token expired or revoked");
     }
 
     private void assertTokenMatch(String rawToken, RefreshToken entityToken) {
         String rawTokenHash = HashUtils.sha256(rawToken);
-
         if (!rawTokenHash.equals(entityToken.getTokenHash())) {
-            throw new RuntimeException("Invalid refresh token");
+            throw new RefreshTokenMismatchException("Invalid refresh token");
         }
     }
 }

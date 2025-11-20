@@ -5,6 +5,9 @@ import com.clinicturn.api.auth.dto.request.UpdateClinicUserRequest;
 import com.clinicturn.api.auth.model.ClinicUser;
 import com.clinicturn.api.auth.repository.ClinicUserRepository;
 import com.clinicturn.api.auth.service.ClinicUserService;
+import com.clinicturn.api.common.exception.IdsMismatchException;
+import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
+import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,28 +55,24 @@ public class ClinicUserServiceImpl implements ClinicUserService {
     @Override
     public ClinicUser findByIdAndReturnEntity(Long id) {
         return repository.findById(id)
-                // Resource Not Found
-                .orElseThrow(() -> new RuntimeException("Clinic User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Clinic User not found with id: " + id));
     }
 
     @Override
     public ClinicUser findByUsernameAndReturnEntity(String username) {
         return repository.findByUsername(username)
-                // Resource Not Found
-                .orElseThrow(() -> new RuntimeException("Clinic User not found with username: " + username));
+                .orElseThrow(() -> new ResourceNotFoundException("Clinic User not found with username: " + username));
     }
 
     private void validateUsernameAlreadyExists(String username) {
         if (repository.existsByUsername(username)) {
-            //ResourceAlreadyExistsException
-            throw new RuntimeException("Clinic User already exists with username: " + username);
+            throw new ResourceAlreadyExistsException("Clinic User already exists with username: " + username);
         }
     }
 
     private void validateMatchingIds(Long pathId, Long requestId) {
         if (!pathId.equals(requestId)) {
-            // Mismatch Ids Exception
-            throw new RuntimeException(("Clinic User's id and Path's id doesn't match."));
+            throw new IdsMismatchException(("Clinic User's id and Path's id doesn't match."));
         }
     }
 }

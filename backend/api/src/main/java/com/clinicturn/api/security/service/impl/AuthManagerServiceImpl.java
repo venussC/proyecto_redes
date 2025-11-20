@@ -4,9 +4,11 @@ import com.clinicturn.api.security.dto.request.LoginRequest;
 import com.clinicturn.api.security.dto.request.LogoutRequest;
 import com.clinicturn.api.security.dto.request.RefreshRequest;
 import com.clinicturn.api.security.dto.response.LoginResponse;
+import com.clinicturn.api.security.dto.response.LogoutResponse;
 import com.clinicturn.api.security.dto.response.RefreshResponse;
 import com.clinicturn.api.security.service.AuthManagerService;
 import com.clinicturn.api.security.service.LoginService;
+import com.clinicturn.api.security.service.LogoutService;
 import com.clinicturn.api.security.service.RefreshService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class AuthManagerServiceImpl implements AuthManagerService {
 
     private final LoginService loginService;
     private final RefreshService refreshService;
+    private final LogoutService logoutService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -29,7 +32,7 @@ public class AuthManagerServiceImpl implements AuthManagerService {
     }
 
     @Override
-    public void logout(LogoutRequest request) {
-
+    public LogoutResponse logout(LogoutRequest request) {
+        return logoutService.logout(request);
     }
 }

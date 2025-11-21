@@ -13,7 +13,8 @@ public enum ClinicRoleType {
     ADMIN("ADM", "Administrator"),
     DOCTOR("DOC", "Doctor"),
     RECEPTION("REC", "Receptionist"),
-    PATIENT("PAT", "Patient");
+    PATIENT("PAT", "Patient"),
+    QUEUE_MANAGER("QMA", "Queue Manager");
 
     private final String code;
     private final String description;

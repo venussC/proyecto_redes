@@ -21,6 +21,7 @@ public class ClinicRoleInitializer implements CommandLineRunner {
         createDoctorRole();
         createPatientRole();
         createReceptionRole();
+        createQueueManagerRole();
     }
 
     private void createAdminRole() {
@@ -47,6 +48,13 @@ public class ClinicRoleInitializer implements CommandLineRunner {
     private void createReceptionRole() {
         roleService.create(CreateClinicRoleRequest.builder()
                 .code(ClinicRoleType.RECEPTION)
+                .build()
+        );
+    }
+
+    private void createQueueManagerRole() {
+        roleService.create(CreateClinicRoleRequest.builder()
+                .code(ClinicRoleType.QUEUE_MANAGER)
                 .build()
         );
     }

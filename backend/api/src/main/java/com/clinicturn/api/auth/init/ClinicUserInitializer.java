@@ -25,6 +25,7 @@ public class ClinicUserInitializer implements CommandLineRunner {
         createTestDoctorUser();
         createTestPatientUser();
         createTestReceptionUser();
+        createTestQueueManagerUser();
     }
 
     private void createTestAdminUser() {
@@ -83,6 +84,21 @@ public class ClinicUserInitializer implements CommandLineRunner {
         roleUserService.create(CreateClinicRoleUserRequest.builder()
                 .code(ClinicRoleType.RECEPTION)
                 .username("TestReceptionUser01")
+                .build()
+        );
+    }
+
+    private void createTestQueueManagerUser() {
+        userService.createAndReturnEntity(CreateClinicUserRequest.builder()
+                .username("TestQueueManagerUser01")
+                .password("TestPasswordClinic2025*")
+                .phoneNumber("6666-6666")
+                .build()
+        );
+
+        roleUserService.create(CreateClinicRoleUserRequest.builder()
+                .code(ClinicRoleType.QUEUE_MANAGER)
+                .username("TestQueueManagerUser01")
                 .build()
         );
     }

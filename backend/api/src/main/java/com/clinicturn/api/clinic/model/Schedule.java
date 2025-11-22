@@ -11,15 +11,15 @@ import java.time.LocalTime;
 @Data
 @Builder
 @Entity
-@Table(schema = "clinic", name = "schedules",
+@Table(schema = "clinic", name = "schedule",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"clinic_id", "week_day"}, name = "schedules_clinic_id_day_unique")
+            @UniqueConstraint(columnNames = {"clinic_id", "week_day"}, name = "schedule_clinic_id_week_day_unique")
         },
         indexes = {
-            @Index(columnList = "clinic_id", name = "fk_schedules_clinic_idx")
+            @Index(columnList = "clinic_id", name = "fk_schedule_clinic_idx")
         }
 )
-public class Schedules {
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Schedules {
     @ManyToOne
     @NotNull(message = "Schedule's clinic should not be null")
     @JoinColumn(name = "clinic_id", nullable = false,
-                foreignKey = @ForeignKey(name = "fk_schedules_clinic"))
+                foreignKey = @ForeignKey(name = "fk_schedule_clinic"))
     private Clinic clinic;
 
     @NotNull(message = "Schedule's day should not be null")

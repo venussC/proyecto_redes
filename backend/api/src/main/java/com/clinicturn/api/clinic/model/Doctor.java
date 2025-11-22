@@ -27,7 +27,7 @@ public class Doctor {
     @Column(name = "full_name", nullable = false, length = 300)
     private String fullName;
 
-    @OneToMany
+    @ManyToOne
     @NotNull(message = "Doctor's speciality should not be null")
     @JoinColumn(name = "speciality_id", nullable = false,
                 foreignKey = @ForeignKey(name = "fk_doctor_speciality"))

@@ -5,6 +5,7 @@ import com.clinicturn.api.security.provider.CustomAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/auth/refresh").permitAll()
                         .requestMatchers("/api/v1/logout").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/clinic/clinic").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/clinic/schedule").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{clinicId}/schedules").authenticated()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(customAuthenticationProvider)

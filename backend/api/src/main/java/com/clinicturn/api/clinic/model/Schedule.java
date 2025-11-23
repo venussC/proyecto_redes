@@ -2,14 +2,18 @@ package com.clinicturn.api.clinic.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(schema = "clinic", name = "schedule",
         uniqueConstraints = {
@@ -36,16 +40,14 @@ public class Schedule {
     @Enumerated(EnumType.STRING)
     private DayOfWeek weekDay;
 
-    @NotNull(message = "Schedule's opening should not be null")
-    @Column(name = "opening", nullable = false)
+    @Column(name = "opening")
     private LocalTime opening;
 
-    @NotNull(message = "Schedule's closing should not be null")
-    @Column(name = "closing", nullable = false)
+    @Column(name = "closing")
     private LocalTime closing;
 
     @Builder.Default
-    @NotNull(message = "Schedule's closed should not be null")
-    @Column(name = "closed", nullable = false)
-    private Boolean closed = false;
+    @NotNull(message = "Schedule's isClosed should not be null")
+    @Column(name = "is_closed", nullable = false)
+    private Boolean isClosed = false;
 }

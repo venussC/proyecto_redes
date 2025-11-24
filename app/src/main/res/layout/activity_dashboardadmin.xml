@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/include_toolbaradmin"
+        tools:layout_editor_absoluteX="204dp"
+        tools:layout_editor_absoluteY="317dp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="385dp"
+        android:layout_height="743dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/Cardturno"
+            android:layout_width="356dp"
+            android:layout_height="129dp"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="124dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_background"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/txtNumeroTurno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/montserrat_extrabold"
+                    android:gravity="center"
+                    android:text="Bienvenido admin"
+                    android:textColor="@color/verde"
+                    android:textSize="34sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="260dp"
+            tools:layout_editor_absoluteY="371dp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="En espera: "
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="109dp"
+            tools:layout_editor_absoluteY="316dp" />
+
+        <TextView
+            android:id="@+id/txtcantturnos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="n turno"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="201dp"
+            tools:layout_editor_absoluteY="316dp" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="En atención"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="110dp"
+            tools:layout_editor_absoluteY="362dp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Completado hoy"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="75dp"
+            tools:layout_editor_absoluteY="439dp" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiempo completado"
+            tools:layout_editor_absoluteX="66dp"
+            tools:layout_editor_absoluteY="485dp" />
+
+        <TextView
+            android:id="@+id/txtatencion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="n num"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="212dp"
+            tools:layout_editor_absoluteY="365dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="121dp"
+            android:layout_height="55dp"
+            android:text="Salir"
+            tools:layout_editor_absoluteX="129dp"
+            tools:layout_editor_absoluteY="559dp" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="n turnos"
+            tools:layout_editor_absoluteX="212dp"
+            tools:layout_editor_absoluteY="439dp" />
+
+        <TextView
+            android:id="@+id/txttiempo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="n tiempo"
+            tools:layout_editor_absoluteX="209dp"
+            tools:layout_editor_absoluteY="486dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

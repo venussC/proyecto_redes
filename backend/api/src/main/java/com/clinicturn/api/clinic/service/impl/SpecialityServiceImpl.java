@@ -26,7 +26,7 @@ public class SpecialityServiceImpl implements SpecialityService {
     @Override
     @Transactional
     public SpecialityResponse create(CreateSpecialityRequest request) {
-        SpecialityType specialityType = getAndValidateSpecialityTypeFromRequest(request);
+        SpecialityType specialityType = getAndValidateSpecialityTypeFromCode(request.getSpecialityCode());
         validateIntegrity(specialityType);
         Speciality entity = mapFromSpecialityTypetoEntity(specialityType);
         Speciality savedEntity = specialityRepository.save(entity);
@@ -40,19 +40,25 @@ public class SpecialityServiceImpl implements SpecialityService {
     }
 
     @Override
+    public Speciality getByCodeAndReturnEntity(String code) {
+        SpecialityType specialityType = getAndValidateSpecialityTypeFromCode(code);
+        return specialityRepository.findByCode(specialityType.getCode())
+                .orElseThrow(() -> new ResourceNotFoundException("Speciality not found with code: " + code));
+    }
+
+    @Override
     public List<SpecialityResponse> getAll() {
         return specialityRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .toList();
     }
 
-    private SpecialityType getAndValidateSpecialityTypeFromRequest(CreateSpecialityRequest request) {
+    private SpecialityType getAndValidateSpecialityTypeFromCode(String specialityCode) {
         try {
-            return SpecialityType.fromCode(request.getSpecialityCode());
+            return SpecialityType.fromCode(specialityCode);
         } catch (IllegalArgumentException e) {
             throw new InvalidSpecialityCodeException(
-                    "Invalid speciality code: " + request.getSpecialityCode() +
-                            ". Allowed values are: " + Arrays.toString(SpecialityType.values())
+                    "Invalid speciality code: " + specialityCode
             );
         }
     }

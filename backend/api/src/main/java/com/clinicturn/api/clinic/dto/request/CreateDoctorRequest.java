@@ -19,6 +19,7 @@ public class CreateDoctorRequest {
     private String specialityCode;
 
     @Email(message = "CreateDoctorRequest's email should be a valid email")
+    @NotBlank(message = "CreateDoctorRequest's should not be blank")
     private String email;
 
     @NotBlank(message = "CreateDoctorRequest's phoneNumber should not be blank")

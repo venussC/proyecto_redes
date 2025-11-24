@@ -3,6 +3,7 @@ package com.clinicturn.api.clinic.controller;
 import com.clinicturn.api.clinic.dto.request.CreateRoomRequest;
 import com.clinicturn.api.clinic.dto.response.RoomResponse;
 import com.clinicturn.api.clinic.service.RoomService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/room")
-    public ResponseEntity<RoomResponse> create(CreateRoomRequest request) {
+    public ResponseEntity<RoomResponse> create(@Valid @RequestBody CreateRoomRequest request) {
         RoomResponse response = roomService.create(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

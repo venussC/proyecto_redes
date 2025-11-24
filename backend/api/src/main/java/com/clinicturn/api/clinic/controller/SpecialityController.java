@@ -3,6 +3,7 @@ package com.clinicturn.api.clinic.controller;
 import com.clinicturn.api.clinic.dto.request.CreateSpecialityRequest;
 import com.clinicturn.api.clinic.dto.response.SpecialityResponse;
 import com.clinicturn.api.clinic.service.SpecialityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class SpecialityController {
     private final SpecialityService specialityService;
 
     @PostMapping("/speciality")
-    public ResponseEntity<SpecialityResponse> create(CreateSpecialityRequest request) {
+    public ResponseEntity<SpecialityResponse> create(@Valid @RequestBody CreateSpecialityRequest request) {
         SpecialityResponse response = specialityService.create(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

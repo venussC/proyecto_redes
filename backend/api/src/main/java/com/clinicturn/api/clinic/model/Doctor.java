@@ -47,7 +47,7 @@ public class Doctor {
     @Builder.Default
     @NotNull(message = "Doctor's active should not be blank")
     @Column(name = "is_active", nullable = false)
-    private Boolean isActive = false;
+    private Boolean isActive = true;
 
     @NotNull(message = "Doctor's createdAt should not be null")
     @Column(name = "created_at", nullable = false)

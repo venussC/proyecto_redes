@@ -5,6 +5,7 @@ import com.clinicturn.api.clinic.dto.response.ClinicResponse;
 import com.clinicturn.api.clinic.service.ClinicService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,8 @@ public class ClinicController {
     @PostMapping("/clinic")
     public ResponseEntity<ClinicResponse> create(@Valid @RequestBody CreateClinicRequest request) {
         ClinicResponse response = clinicService.create(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 }

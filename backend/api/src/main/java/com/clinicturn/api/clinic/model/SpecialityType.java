@@ -16,7 +16,7 @@ public enum SpecialityType {
     PEDIATRIA("PEDIAT", "Pediatria");
 
     private final String code;
-    private final String description;
+    private final String displayName;
 
     public static SpecialityType fromCode(String code) {
         return Arrays.stream(values())

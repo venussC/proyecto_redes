@@ -25,7 +25,7 @@ public class Speciality {
     private Long id;
 
     @NotBlank(message = "Speciality's code should not be null")
-    @Column(name = "code", nullable = false, length = 5)
+    @Column(name = "code", nullable = false, length = 6)
     private String code;
 
     @NotBlank(message = "Speciality's displayName should not be null")

@@ -5,6 +5,7 @@ import com.clinicturn.api.clinic.dto.response.ClinicScheduleResponse;
 import com.clinicturn.api.clinic.dto.response.ScheduleResponse;
 import com.clinicturn.api.clinic.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,9 @@ public class ScheduleController {
     @PostMapping("/schedule")
     public ResponseEntity<ScheduleResponse> create(CreateScheduleRequest request) {
         ScheduleResponse response = scheduleService.create(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @GetMapping("/clinic/{clinicId}/schedules")

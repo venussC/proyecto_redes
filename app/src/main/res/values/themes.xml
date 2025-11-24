@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Proyecto_final_redes" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#005b5c</item>
+
     </style>
 
     <style name="Theme.Proyecto_final_redes" parent="Base.Theme.Proyecto_final_redes" />

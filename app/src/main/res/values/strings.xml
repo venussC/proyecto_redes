@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">proyecto_final_redes</string>
+    <string-array name="especialidades">
+        <item>Medicina general</item>
+        <item>Pediatría</item>
+        <item>Cardiología</item>
+        <item>Dermatología</item>
+    </string-array>
 </resources>

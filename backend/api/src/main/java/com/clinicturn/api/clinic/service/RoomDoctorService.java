@@ -1,8 +1,9 @@
 package com.clinicturn.api.clinic.service;
 
-import com.clinicturn.api.clinic.dto.response.RoomResponse;
+import com.clinicturn.api.clinic.dto.request.CreateRoomDoctorRequest;
+import com.clinicturn.api.clinic.dto.response.RoomDoctorResponse;
 
 public interface RoomDoctorService {
 
-    RoomResponse findLatestRoomFromDoctor(Long doctorId);
+    RoomDoctorResponse create(CreateRoomDoctorRequest request);
 }

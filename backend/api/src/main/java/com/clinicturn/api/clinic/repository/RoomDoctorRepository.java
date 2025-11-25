@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface RoomDoctorRepository extends JpaRepository<RoomDoctor, Long> {
 
+    boolean existsByRoomIdAndDoctorId(Long roomId, Long doctorId);
+
     Optional<RoomDoctor> findTopByDoctor_IdOrderByAssignedAtDesc(Long doctorId);
 }

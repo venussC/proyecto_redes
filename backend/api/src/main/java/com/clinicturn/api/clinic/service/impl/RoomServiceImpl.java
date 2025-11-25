@@ -41,6 +41,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room getByIdAndReturnEntity(Long roomId) {
+        return validateExistsById(roomId);
+    }
+
+    @Override
     public List<RoomResponse> getAllAvailablesByClinicId(Long clinicId) {
         clinicService.assertExistsById(clinicId);
         return roomRepository.findByClinicIdOrderByRoomNumberAsc(clinicId).stream()

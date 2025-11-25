@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/active").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor/assign-room").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(customAuthenticationProvider)

@@ -1,6 +1,8 @@
 package com.clinicturn.api.clinic.exception.handler;
 
+import com.clinicturn.api.clinic.exception.InactiveRoomException;
 import com.clinicturn.api.clinic.exception.InvalidSpecialityCodeException;
+import com.clinicturn.api.clinic.exception.UnavailableRoomException;
 import com.clinicturn.api.common.dto.response.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -27,5 +29,35 @@ public class ClinicExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InactiveRoomException.class)
+    public ResponseEntity<ApiErrorResponse> inactiveRoomExceptionHandler(InactiveRoomException ex,
+                                                                         HttpServletRequest request) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .title("Inactive Room")
+                .status(HttpStatus.CONFLICT.value())
+                .detail(ex.getMessage())
+                .instance(request.getRequestURI())
+                .timestamp(Instant.now())
+                .errors(List.of())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(UnavailableRoomException.class)
+    public ResponseEntity<ApiErrorResponse> unavailableRoomExceptionHandler(UnavailableRoomException ex,
+                                                                            HttpServletRequest request) {
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .title("Unavailable Room")
+                .status(HttpStatus.CONFLICT.value())
+                .detail(ex.getMessage())
+                .instance(request.getRequestURI())
+                .timestamp(Instant.now())
+                .errors(List.of())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }

@@ -1,6 +1,7 @@
 package com.clinicturn.api.clinic.controller;
 
 import com.clinicturn.api.clinic.dto.request.CreateRoomRequest;
+import com.clinicturn.api.clinic.dto.request.UpdateRoomRequest;
 import com.clinicturn.api.clinic.dto.response.RoomResponse;
 import com.clinicturn.api.clinic.service.RoomService;
 import jakarta.validation.Valid;
@@ -23,6 +24,23 @@ public class RoomController {
         RoomResponse response = roomService.create(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @PutMapping("/room/{id}")
+    public ResponseEntity<RoomResponse> update(@PathVariable Long id,
+                                               @Valid @RequestBody UpdateRoomRequest request) {
+        RoomResponse response = roomService.update(id, request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/room")
+    public ResponseEntity<List<RoomResponse>> getAll() {
+        List<RoomResponse> response = roomService.getAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(response);
     }
 

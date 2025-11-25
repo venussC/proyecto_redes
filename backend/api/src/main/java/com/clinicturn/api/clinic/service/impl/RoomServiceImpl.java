@@ -1,12 +1,14 @@
 package com.clinicturn.api.clinic.service.impl;
 
 import com.clinicturn.api.clinic.dto.request.CreateRoomRequest;
+import com.clinicturn.api.clinic.dto.request.UpdateRoomRequest;
 import com.clinicturn.api.clinic.dto.response.RoomResponse;
 import com.clinicturn.api.clinic.model.Clinic;
 import com.clinicturn.api.clinic.model.Room;
 import com.clinicturn.api.clinic.repository.RoomRepository;
 import com.clinicturn.api.clinic.service.ClinicService;
 import com.clinicturn.api.clinic.service.RoomService;
+import com.clinicturn.api.common.exception.IdsMismatchException;
 import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
 import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,25 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
+    public RoomResponse update(Long id, UpdateRoomRequest request) {
+        validateMatchingIds(id, request.getId());
+        Room roomEntity = getByIdAndReturnEntity(id);
+        roomEntity.setIsAvailable(request.getIsAvailable());
+        roomEntity.setIsActive(request.getIsActive());
+        roomRepository.save(roomEntity);
+        return mapToResponse(roomEntity);
+    }
+
+    @Override
+    @Transactional
+    public void updateIsAvailableStatus(Long id, Boolean isAvailable) {
+        Room room = validateExistsById(id);
+        room.setIsAvailable(isAvailable);
+        roomRepository.save(room);
+    }
+
+    @Override
     public RoomResponse getById(Long roomId) {
         Room entity = validateExistsById(roomId);
         return mapToResponse(entity);
@@ -53,6 +74,13 @@ public class RoomServiceImpl implements RoomService {
                 .toList();
     }
 
+    @Override
+    public List<RoomResponse> getAll() {
+        return roomRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
     private void validateNotExistsByClinicIdAndRoomNumber(Long clinicId, Integer roomNumber) {
         if (roomRepository.existsByClinicIdAndRoomNumber(clinicId, roomNumber)) {
             throw new ResourceAlreadyExistsException("Room already exists for clinic id: " + clinicId +
@@ -64,6 +92,12 @@ public class RoomServiceImpl implements RoomService {
     private Room validateExistsById(Long roomId) {
         return roomRepository.findById(roomId)
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " + roomId));
+    }
+
+    private void validateMatchingIds(Long pathId, Long requestId) {
+        if (!pathId.equals(requestId)) {
+            throw new IdsMismatchException("Path id and request id are not equal");
+        }
     }
 
     private Room mapFromCreateDTOtoEntity(Clinic clinic, CreateRoomRequest request) {

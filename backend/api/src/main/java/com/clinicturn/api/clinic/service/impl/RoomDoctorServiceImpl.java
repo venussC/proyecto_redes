@@ -2,6 +2,8 @@ package com.clinicturn.api.clinic.service.impl;
 
 import com.clinicturn.api.clinic.dto.request.CreateRoomDoctorRequest;
 import com.clinicturn.api.clinic.dto.response.RoomDoctorResponse;
+import com.clinicturn.api.clinic.exception.InactiveRoomException;
+import com.clinicturn.api.clinic.exception.UnavailableRoomException;
 import com.clinicturn.api.clinic.model.Doctor;
 import com.clinicturn.api.clinic.model.Room;
 import com.clinicturn.api.clinic.model.RoomDoctor;
@@ -29,26 +31,50 @@ public class RoomDoctorServiceImpl implements RoomDoctorService {
     @Override
     @Transactional
     public RoomDoctorResponse assignRoom(CreateRoomDoctorRequest request) {
-        Room room = roomService.getByIdAndReturnEntity(request.getRoomId());
+        Room newRoom = roomService.getByIdAndReturnEntity(request.getRoomId());
         Doctor doctor = doctorService.getByIdAndReturnEntity(request.getDoctorId());
 
-        Optional<RoomDoctor> existing = roomDoctorRepository
+        validateRoomIsAvailable(newRoom);
+
+        Optional<RoomDoctor> existingOpt = roomDoctorRepository
                 .findTopByDoctor_IdOrderByAssignedAtDesc(doctor.getId());
 
         RoomDoctor roomDoctor;
 
-        if (existing.isPresent()) {
-            roomDoctor = existing.get();
-            validateIntegrity(roomDoctor.getRoom().getId(), room.getId(), doctor.getId());
-            roomDoctor.setRoom(room);
+        if (existingOpt.isPresent()) {
+            RoomDoctor existing = existingOpt.get();
+            Room oldRoom = existing.getRoom();
+
+            validateIntegrity(oldRoom.getId(), newRoom.getId(), doctor.getId());
+
+            roomService.updateIsAvailableStatus(oldRoom.getId(), true);
+            roomService.updateIsAvailableStatus(newRoom.getId(), false);
+
+            existing.setRoom(newRoom);
+            roomDoctor = existing;
         } else {
+            roomService.updateIsAvailableStatus(newRoom.getId(), false);
             roomDoctor = RoomDoctor.builder()
-                    .room(room)
+                    .room(newRoom)
                     .doctor(doctor)
                     .build();
         }
         RoomDoctor saved = roomDoctorRepository.save(roomDoctor);
         return mapToResponse(saved);
+    }
+
+    private void validateRoomIsAvailable(Room room) {
+        if (!room.getIsActive()) {
+            throw new InactiveRoomException(
+                    "Room with id: " + room.getId() + " is inactive and cannot be assigned."
+            );
+        }
+
+        if (!room.getIsAvailable()) {
+            throw new UnavailableRoomException(
+                    "Room with id: " + room.getId() + " is not available for assignment."
+            );
+        }
     }
 
     private void validateIntegrity(Long entityRoomId, Long requestRoomId, Long doctorId) {

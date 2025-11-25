@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/speciality/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/speciality").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/clinic/doctor/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/active").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor/assign-room").hasRole("ADMIN")

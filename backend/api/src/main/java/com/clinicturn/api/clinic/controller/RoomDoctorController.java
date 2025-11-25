@@ -17,8 +17,8 @@ public class RoomDoctorController {
     private final RoomDoctorService roomDoctorService;
 
     @PostMapping("/doctor/assign-room")
-    public ResponseEntity<RoomDoctorResponse> create(@Valid @RequestBody CreateRoomDoctorRequest request) {
-        RoomDoctorResponse response = roomDoctorService.create(request);
+    public ResponseEntity<RoomDoctorResponse> assignRoom(@Valid @RequestBody CreateRoomDoctorRequest request) {
+        RoomDoctorResponse response = roomDoctorService.assignRoom(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);

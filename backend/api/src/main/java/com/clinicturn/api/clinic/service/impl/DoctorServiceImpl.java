@@ -1,6 +1,7 @@
 package com.clinicturn.api.clinic.service.impl;
 
 import com.clinicturn.api.clinic.dto.request.CreateDoctorRequest;
+import com.clinicturn.api.clinic.dto.request.UpdateDoctorRequest;
 import com.clinicturn.api.clinic.dto.response.DoctorResponse;
 import com.clinicturn.api.clinic.dto.response.RoomResponse;
 import com.clinicturn.api.clinic.dto.response.SpecialityResponse;
@@ -11,6 +12,7 @@ import com.clinicturn.api.clinic.repository.DoctorRepository;
 import com.clinicturn.api.clinic.repository.RoomDoctorRepository;
 import com.clinicturn.api.clinic.service.DoctorService;
 import com.clinicturn.api.clinic.service.SpecialityService;
+import com.clinicturn.api.common.exception.IdsMismatchException;
 import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,20 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Transactional
+    public DoctorResponse update(Long id, UpdateDoctorRequest request) {
+        assertMatchingIds(id, request.getId());
+        Doctor doctorEntity = getAndValidateExistsById(id);
+        Speciality specialityRequest = specialityService.getByCodeAndReturnEntity(request.getSpecialityCode());
+        doctorEntity.setSpeciality(specialityRequest);
+        doctorEntity.setEmail(request.getEmail());
+        doctorEntity.setPhoneNumber(request.getPhoneNumber());
+        doctorEntity.setIsActive(request.getIsActive());
+        Doctor updatedEntity = doctorRepository.save(doctorEntity);
+        return mapToResponse(updatedEntity, findLatestRoomFromDoctor(updatedEntity.getId()));
+    }
+
+    @Override
     public DoctorResponse getById(Long id) {
         Doctor doctor = getAndValidateExistsById(id);
         RoomResponse roomResponse = findLatestRoomFromDoctor(doctor.getId());
@@ -47,6 +63,16 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Doctor getByIdAndReturnEntity(Long id) {
         return getAndValidateExistsById(id);
+    }
+
+    @Override
+    public List<DoctorResponse> getAll() {
+        return doctorRepository.findAll().stream()
+                .map(doctor -> {
+                    RoomResponse roomResponse = findLatestRoomFromDoctor(doctor.getId());
+                    return mapToResponse(doctor, roomResponse);
+                })
+                .toList();
     }
 
     @Override
@@ -72,6 +98,12 @@ public class DoctorServiceImpl implements DoctorService {
     private Doctor getAndValidateExistsById(Long id) {
         return doctorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + id));
+    }
+
+    private void assertMatchingIds(Long pathId, Long requestId) {
+        if (!pathId.equals(requestId)) {
+            throw new IdsMismatchException("Path id: " + pathId + " and Request id: " + requestId + " doesn't match.");
+        }
     }
 
     private RoomResponse findLatestRoomFromDoctor(Long doctorId) {

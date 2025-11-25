@@ -5,5 +5,5 @@ import com.clinicturn.api.clinic.dto.response.RoomDoctorResponse;
 
 public interface RoomDoctorService {
 
-    RoomDoctorResponse create(CreateRoomDoctorRequest request);
+    RoomDoctorResponse assignRoom(CreateRoomDoctorRequest request);
 }

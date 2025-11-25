@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,27 +28,36 @@ public class RoomDoctorServiceImpl implements RoomDoctorService {
 
     @Override
     @Transactional
-    public RoomDoctorResponse create(CreateRoomDoctorRequest request) {
+    public RoomDoctorResponse assignRoom(CreateRoomDoctorRequest request) {
         Room room = roomService.getByIdAndReturnEntity(request.getRoomId());
         Doctor doctor = doctorService.getByIdAndReturnEntity(request.getDoctorId());
-        validateIntegrity(room.getId(), doctor.getId());
-        RoomDoctor roomDoctor = mapToEntity(room, doctor);
-        RoomDoctor savedRoomDoctor = roomDoctorRepository.save(roomDoctor);
-        return mapToResponse(savedRoomDoctor);
-    }
 
-    private void validateIntegrity(Long roomId, Long doctorId) {
-        if (roomDoctorRepository.existsByRoomIdAndDoctorId(roomId, doctorId)) {
-            throw new ResourceAlreadyExistsException("Room with id: " + roomId + " is already assigned to" +
-                    "Doctor with id: " + doctorId);
+        Optional<RoomDoctor> existing = roomDoctorRepository
+                .findTopByDoctor_IdOrderByAssignedAtDesc(doctor.getId());
+
+        RoomDoctor roomDoctor;
+
+        if (existing.isPresent()) {
+            roomDoctor = existing.get();
+            validateIntegrity(roomDoctor.getRoom().getId(), room.getId(), doctor.getId());
+            roomDoctor.setRoom(room);
+        } else {
+            roomDoctor = RoomDoctor.builder()
+                    .room(room)
+                    .doctor(doctor)
+                    .build();
         }
+        RoomDoctor saved = roomDoctorRepository.save(roomDoctor);
+        return mapToResponse(saved);
     }
 
-    private RoomDoctor mapToEntity(Room room, Doctor doctor) {
-        return RoomDoctor.builder()
-                .room(room)
-                .doctor(doctor)
-                .build();
+    private void validateIntegrity(Long entityRoomId, Long requestRoomId, Long doctorId) {
+        if (entityRoomId.equals(requestRoomId)) {
+            throw new ResourceAlreadyExistsException(
+                    "Doctor with id " + doctorId +
+                            " is already assigned to room " + entityRoomId
+            );
+        }
     }
 
     private RoomDoctorResponse mapToResponse(RoomDoctor entity) {

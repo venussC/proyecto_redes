@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClinicRoleUserRepository extends JpaRepository<ClinicRoleUser, Long> {
 
@@ -15,4 +16,8 @@ public interface ClinicRoleUserRepository extends JpaRepository<ClinicRoleUser, 
            SELECT cru.role.code FROM ClinicRoleUser cru WHERE cru.user.id = :userId
            """)
     List<ClinicRoleType> findRoleCodesByUserId(Long userId);
+
+    Optional<ClinicRoleUser> findFirstByUser_Id(Long userId);
+
+    Optional<ClinicRoleUser> findFirstByUser_Username(String username);
 }

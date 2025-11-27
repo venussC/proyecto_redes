@@ -15,4 +15,6 @@ public interface ClinicRoleUserService {
     boolean existsByRoleTypeCodeAndUsername(ClinicRoleType code, String username);
 
     List<ClinicRoleType> findRoleCodesByUserId(Long userId);
+
+    ClinicRoleUser findByUserUsername(String username);
 }

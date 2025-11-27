@@ -11,6 +11,7 @@ import com.clinicturn.api.auth.service.ClinicRoleService;
 import com.clinicturn.api.auth.service.ClinicRoleUserService;
 import com.clinicturn.api.auth.service.ClinicUserService;
 import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
+import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,12 @@ public class ClinicRoleUserServiceImpl implements ClinicRoleUserService {
         List<ClinicRoleType> codes = repository.findRoleCodesByUserId(userId);
         validateUserRolesNotEmpty(codes, userId);
         return codes;
+    }
+
+    @Override
+    public ClinicRoleUser findByUserUsername(String username) {
+        return repository.findFirstByUser_Username(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Roles not found with username: " + username));
     }
 
     private void validateRoleUserAlreadyExists(Long roleId, Long userId) {

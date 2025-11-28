@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(schema = "patient", name = "turn_status",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = "code", name = "turn_status_code_unique"),
-            @UniqueConstraint(columnNames = "display_name", name = "turn_status_display_name_unique")
+            @UniqueConstraint(columnNames = "status_name", name = "turn_status_status_name_unique")
         }
 )
 public class TurnStatus {
@@ -25,10 +24,6 @@ public class TurnStatus {
     private Long id;
 
     @NotNull(message = "TurnStatus's code should not be null")
-    @Column(name = "code", nullable = false, length = 4)
-    private String code;
-
-    @NotNull(message = "TurnStatus's displayName should not be null")
-    @Column(name = "display_name", nullable = false, length = 15)
-    private String displayName;
+    @Column(name = "status_name", nullable = false, length = 10)
+    private String name;
 }

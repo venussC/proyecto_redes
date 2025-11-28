@@ -8,6 +8,7 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor
 public enum StatusType {
+    WAITING,
     CALLED,
     SEEN,
     COMPLETED,

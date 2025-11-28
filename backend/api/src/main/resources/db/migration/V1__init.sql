@@ -238,13 +238,13 @@ CREATE TABLE patient.turn (
     id bigint NOT NULL,
     speciality_id bigint NOT NULL,
     patient_id bigint NOT NULL,
-    doctor_id bigint NOT NULL,
+    doctor_id bigint,
     reason VARCHAR(500) NOT NULL,
     turn_status_id bigint NOT NULL,
-    called_at timestamp(6) without time zone NOT NULL,
-    seen_at timestamp(6) without time zone NOT NULL,
-    completed_at timestamp(6) without time zone NOT NULL,
-    cancelled_at timestamp(6) without time zone NOT NULL,
+    called_at timestamp(6) without time zone,
+    seen_at timestamp(6) without time zone,
+    completed_at timestamp(6) without time zone,
+    cancelled_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

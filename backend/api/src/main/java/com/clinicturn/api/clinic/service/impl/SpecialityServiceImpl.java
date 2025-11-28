@@ -39,6 +39,11 @@ public class SpecialityServiceImpl implements SpecialityService {
     }
 
     @Override
+    public Speciality getByIdAndReturnEntity(Long id) {
+        return validateAndReturnEntityById(id);
+    }
+
+    @Override
     public Speciality getByCodeAndReturnEntity(String code) {
         SpecialityType specialityType = getAndValidateSpecialityTypeFromCode(code);
         return specialityRepository.findByCode(specialityType.getCode())

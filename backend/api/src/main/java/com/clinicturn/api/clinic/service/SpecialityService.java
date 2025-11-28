@@ -12,6 +12,8 @@ public interface SpecialityService {
 
     SpecialityResponse getById(Long id);
 
+    Speciality getByIdAndReturnEntity(Long id);
+
     Speciality getByCodeAndReturnEntity(String code);
 
     List<SpecialityResponse> getAll();

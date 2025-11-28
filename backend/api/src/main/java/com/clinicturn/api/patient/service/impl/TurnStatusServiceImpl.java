@@ -39,9 +39,19 @@ public class TurnStatusServiceImpl implements TurnStatusService {
     }
 
     @Override
+    public TurnStatus getByIdAndReturnEntity(Long id) {
+        return validateAndReturnById(id);
+    }
+
+    @Override
     public TurnStatusResponse getByName(String name) {
         TurnStatus entity = validateAndReturnByName(name);
         return mapToResponse(entity);
+    }
+
+    @Override
+    public TurnStatus getByNameAndReturnEntity(String name) {
+        return validateAndReturnByName(name);
     }
 
     @Override

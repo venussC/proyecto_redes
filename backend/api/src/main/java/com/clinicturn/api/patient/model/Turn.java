@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @NoArgsConstructor
@@ -43,8 +44,7 @@ public class Turn {
     private Patient patient;
 
     @ManyToOne
-    @NotNull(message = "Turn's doctor should not be null")
-    @JoinColumn(name = "doctor_id", nullable = false,
+    @JoinColumn(name = "doctor_id",
                 foreignKey = @ForeignKey(name = "fk_turn_doctor"))
     private Doctor doctor;
 
@@ -58,20 +58,16 @@ public class Turn {
                 foreignKey = @ForeignKey(name = "fk_turn_turn_status"))
     private TurnStatus status;
 
-    @NotNull(message = "Turn's calledAt should not be null")
-    @Column(name = "called_at", nullable = false)
+    @Column(name = "called_at")
     private LocalDateTime calledAt;
 
-    @NotNull(message = "Turn's seenAt should not be null")
-    @Column(name = "seen_at", nullable = false)
+    @Column(name = "seen_at")
     private LocalDateTime seenAt;
 
-    @NotNull(message = "Turn's completedAt should not be null")
-    @Column(name = "completed_at", nullable = false)
+    @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @NotNull(message = "Turn's canceledAt should not be null")
-    @Column(name = "cancelled_at", nullable = false)
+    @Column(name = "cancelled_at")
     private LocalDateTime cancelledAt;
 
     @NotNull(message = "Turn's createdAt should not be null")
@@ -81,4 +77,28 @@ public class Turn {
     @NotNull(message = "Turn's updatedAt should not be null")
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        timestampsInitializer();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = getLocalChronoTime();
+    }
+
+    public void timestampsInitializer() {
+        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
+        if (createdAt == null) {
+            createdAt = now;
+        }
+        if (updatedAt == null) {
+            updatedAt = now;
+        }
+    }
+
+    public LocalDateTime getLocalChronoTime() {
+        return LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
+    }
 }

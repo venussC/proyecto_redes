@@ -54,6 +54,12 @@ public class PatientServiceImpl implements PatientService {
         return mapToResponse(patient);
     }
 
+    @Override
+    public Patient getByIdAndReturnEntity(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
+    }
+
     private Patient validatePatient(CreatePatientRequest request, ClinicUser userEntity) {
         if (!patientRepository.existsByUser_Id(userEntity.getId())) {
             return savePatient(request, userEntity);

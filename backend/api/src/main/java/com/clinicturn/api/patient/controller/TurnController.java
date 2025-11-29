@@ -1,8 +1,8 @@
 package com.clinicturn.api.patient.controller;
 
-import com.clinicturn.api.patient.dto.request.CreateTurnRequest;
+import com.clinicturn.api.patient.dto.request.CreatePatientTurnRequest;
 import com.clinicturn.api.patient.dto.response.TurnResponse;
-import com.clinicturn.api.patient.service.TurnService;
+import com.clinicturn.api.patient.service.CreatePatientTurnService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/patient/turn")
 public class TurnController {
 
-    private final TurnService turnService;
+    private final CreatePatientTurnService createService;
 
     @PostMapping()
-    public ResponseEntity<TurnResponse> create(@Valid @RequestBody CreateTurnRequest request,
+    public ResponseEntity<TurnResponse> create(@Valid @RequestBody CreatePatientTurnRequest request,
                                                Authentication authentication) {
-        TurnResponse response = turnService.create(request, authentication);
+        TurnResponse response = createService.create(request, authentication);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);

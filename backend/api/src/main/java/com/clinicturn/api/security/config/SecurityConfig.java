@@ -31,8 +31,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/auth/refresh").permitAll()
                         .requestMatchers("/api/v1/auth/logout").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .requestMatchers("/api/v1/auth/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/clinic").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{id}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/schedule").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{clinicId}/schedules").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/room").hasRole("ADMIN")
@@ -49,7 +55,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/active").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor/assign-room").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/patient/patient").hasAnyRole("PATIENT", "RECEPTION")
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/patient/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/patient/turn").hasAnyRole("PATIENT", "RECEPTION")
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/status").authenticated()

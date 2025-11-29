@@ -7,6 +7,7 @@ import java.time.Instant;
 @Builder
 public record TurnResponse(
     Long id,
+    String number,
     TurnSpecialityResponse speciality,
     TurnPatientResponse patient,
     TurnDoctorResponse doctor,

@@ -31,6 +31,10 @@ public class Turn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Turn's number should not be null")
+    @Column(name = "turn_number", nullable = false, length = 5)
+    private String number;
+
     @ManyToOne
     @NotNull(message = "Turn's speciality should not be null")
     @JoinColumn(name = "speciality_id", nullable = false,

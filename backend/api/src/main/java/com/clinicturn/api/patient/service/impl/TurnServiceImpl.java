@@ -14,6 +14,7 @@ import com.clinicturn.api.patient.repository.TurnRepository;
 import com.clinicturn.api.patient.service.PatientService;
 import com.clinicturn.api.patient.service.TurnService;
 import com.clinicturn.api.patient.service.TurnStatusService;
+import com.clinicturn.api.patient.util.TurnNumberGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,7 +43,8 @@ public class TurnServiceImpl implements TurnService {
         List<String> roles = getRolesFromAuthentication(authentication);
         validateNotExistsValidTurn(patient, roles);
         TurnStatus turnStatus = turnStatusService.getByNameAndReturnEntity("WAITING");
-        Turn entity = mapFromCreateRequestToEntity(request, speciality, patient, turnStatus);
+        String nextTurnNumber = generateNextTurnNumber();
+        Turn entity = mapFromCreateRequestToEntity(request, nextTurnNumber, speciality, patient, turnStatus);
         Turn saved = turnRepository.save(entity);
         return mapToResponse(saved);
     }
@@ -81,9 +83,17 @@ public class TurnServiceImpl implements TurnService {
                 || turn.getCancelledAt() != null;
     }
 
-    private Turn mapFromCreateRequestToEntity(CreateTurnRequest request, Speciality speciality,
-                                              Patient patient, TurnStatus turnStatus) {
+    private String generateNextTurnNumber(){
+        Optional<String> lastNumberOpt = turnRepository.findLastTurnNumber();
+        String lastNumber = lastNumberOpt.orElse(null);
+        return TurnNumberGenerator.getNextTurnNumber(lastNumber);
+    }
+
+    private Turn mapFromCreateRequestToEntity(CreateTurnRequest request, String nextTurnNumber,
+                                              Speciality speciality, Patient patient,
+                                              TurnStatus turnStatus) {
         return Turn.builder()
+                .number(nextTurnNumber)
                 .speciality(speciality)
                 .patient(patient)
                 .reason(request.getReason())
@@ -94,6 +104,7 @@ public class TurnServiceImpl implements TurnService {
     private TurnResponse mapToResponse(Turn entity) {
         return TurnResponse.builder()
                 .id(entity.getId())
+                .number(entity.getNumber())
                 .speciality(TurnResponse.TurnSpecialityResponse.builder()
                         .id(entity.getSpeciality().getId())
                         .code(entity.getSpeciality().getCode())

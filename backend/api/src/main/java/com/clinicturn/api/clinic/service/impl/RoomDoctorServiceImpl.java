@@ -12,6 +12,7 @@ import com.clinicturn.api.clinic.service.DoctorService;
 import com.clinicturn.api.clinic.service.RoomDoctorService;
 import com.clinicturn.api.clinic.service.RoomService;
 import com.clinicturn.api.common.exception.ResourceAlreadyExistsException;
+import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,12 @@ public class RoomDoctorServiceImpl implements RoomDoctorService {
         }
         RoomDoctor saved = roomDoctorRepository.save(roomDoctor);
         return mapToResponse(saved);
+    }
+
+    @Override
+    public String getRoomNumberFromDoctorByDoctorId(Long doctorId) {
+        return doctorId == null ? null :
+                roomDoctorRepository.findLastRoomNumberByDoctorId(doctorId).orElse(null);
     }
 
     private void validateRoomIsAvailable(Room room) {

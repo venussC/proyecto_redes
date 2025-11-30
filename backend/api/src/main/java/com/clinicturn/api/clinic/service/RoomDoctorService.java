@@ -6,4 +6,6 @@ import com.clinicturn.api.clinic.dto.response.RoomDoctorResponse;
 public interface RoomDoctorService {
 
     RoomDoctorResponse assignRoom(CreateRoomDoctorRequest request);
+
+    String getRoomNumberFromDoctorByDoctorId(Long doctorId);
 }

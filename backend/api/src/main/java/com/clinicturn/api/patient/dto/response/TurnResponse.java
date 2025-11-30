@@ -35,6 +35,7 @@ public record TurnResponse(
     @Builder
     public record TurnDoctorResponse(
             Long id,
-            String fullName
+            String fullName,
+            String roomNumber
     ){}
 }

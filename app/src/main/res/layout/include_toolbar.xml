@@ -38,7 +38,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:contentDescription="Menú"
-                    android:src="@drawable/iconMenu"
+                    android:src="@drawable/iconmenu"
                     app:tint="@android:color/white" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_height="26dp"
                     android:layout_marginEnd="16dp"
                     android:contentDescription="Notificación"
-                    android:src="@drawable/iconCampana"
+                    android:src="@drawable/campanaverde"
                     app:tint="@android:color/white" />
 
                 <ImageView
@@ -80,7 +80,7 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:contentDescription="Usuario"
-                    android:src="@drawable/iconUsuario"
+                    android:src="@drawable/adminimg"
                     app:tint="@android:color/white" />
             </LinearLayout>
         </LinearLayout>

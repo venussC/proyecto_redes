@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#57C2B6">
+
+    <!-- Círculo superior izquierdo -->
+    <View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/circle_top_left"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <!-- Círculo inferior derecho -->
+    <View
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:background="@drawable/circle_bottom_right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="24dp">
+
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicio de Sesión"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="40dp" />
+
+            <!-- Logo -->
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/logologin" />
+
+            <!-- - USUARIO - -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuario"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="30dp" />
+
+            <!-- CONTENEDOR VERDE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3AAFA390"
+                android:padding="20dp"
+                android:layout_marginTop="10dp">
+
+                <!-- INPUT BLANCO -->
+                <EditText
+                    android:id="@+id/edtUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/input_white"
+                    android:hint="Ingrese su usuario"
+                    android:textColor="#000"
+                    android:textColorHint="#888"
+                    android:padding="12dp" />
+            </LinearLayout>
+
+            <!-- - CONTRASEÑA - -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="30dp" />
+
+            <!-- CONTENEDOR VERDE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3AAFA390"
+                android:padding="20dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/edtContrasena"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/input_white"
+                    android:inputType="textPassword"
+                    android:hint="Ingrese su contraseña"
+                    android:padding="12dp"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+            </LinearLayout>
+
+            <!-- Registrarse -->
+            <TextView
+                android:id="@+id/txtRegistrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿No tienes cuenta? Registrarse"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:layout_marginTop="20dp" />
+
+            <!-- Botón -->
+            <Button
+                android:id="@+id/btnIniciarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/input_white"
+                android:paddingVertical="12dp"
+                android:text="Iniciar Sesión"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

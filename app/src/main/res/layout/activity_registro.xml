@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#57C2B6">
+
+    <!-- Círculo superior izquierdo -->
+    <View
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:background="@drawable/circle_top_left"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <!-- Círculo inferior derecho -->
+    <View
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:background="@drawable/circle_bottom_right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="20dp">
+
+            <!-- TÍTULO -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registro de\nNuevo Paciente"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginTop="20dp" />
+
+            <!-- LOGO -->
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/logologin" />
+
+            <!-- - NOMBRE DE USUARIO - -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de usuario"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginTop="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3AAFA390"
+                android:padding="15dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edtUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/input_white"
+                    android:hint="Ingrese un nombre para su usuario"
+                    android:padding="10dp"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+            </LinearLayout>
+
+            <!-- - CORREO - -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correo electrónico"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginTop="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3AAFA390"
+                android:padding="15dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edtCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/input_white"
+                    android:hint="Ingrese su correo electrónico"
+                    android:inputType="textEmailAddress"
+                    android:padding="10dp"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+            </LinearLayout>
+
+            <!-- - CONTRASEÑA - -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginTop="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#3AAFA390"
+                android:padding="15dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edtContrasena"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/input_white"
+                    android:hint="Ingrese una contraseña"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+            </LinearLayout>
+
+            <!-- - YA TIENES CUENTA - -->
+
+            <TextView
+                android:id="@+id/txtIrLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿Ya tienes una cuenta? Iniciar sesión"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:layout_marginTop="18dp" />
+
+            <!-- - BOTÓN REGISTRARSE - -->
+
+            <Button
+                android:id="@+id/btnRegistrarse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/input_white"
+                android:paddingVertical="10dp"
+                android:text="Registrarse"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
+

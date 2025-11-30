@@ -1,0 +1,62 @@
+package com.clinicturn.api.clinic.controller;
+
+import com.clinicturn.api.clinic.dto.request.CreateRoomRequest;
+import com.clinicturn.api.clinic.dto.request.UpdateRoomRequest;
+import com.clinicturn.api.clinic.dto.response.RoomResponse;
+import com.clinicturn.api.clinic.service.RoomService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/clinic")
+public class RoomController {
+
+    private final RoomService roomService;
+
+    @PostMapping("/room")
+    public ResponseEntity<RoomResponse> create(@Valid @RequestBody CreateRoomRequest request) {
+        RoomResponse response = roomService.create(request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @PutMapping("/room/{id}")
+    public ResponseEntity<RoomResponse> update(@PathVariable Long id,
+                                               @Valid @RequestBody UpdateRoomRequest request) {
+        RoomResponse response = roomService.update(id, request);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/room")
+    public ResponseEntity<List<RoomResponse>> getAll() {
+        List<RoomResponse> response = roomService.getAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/room/{id}")
+    public ResponseEntity<RoomResponse> getById(@PathVariable Long id) {
+        RoomResponse response = roomService.getById(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/clinic/{clinicId}/rooms/available")
+    public ResponseEntity<List<RoomResponse>> getAllAvailableByClinic(@PathVariable Long clinicId) {
+        List<RoomResponse> responses = roomService.getAllAvailablesByClinicId(clinicId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responses);
+    }
+}

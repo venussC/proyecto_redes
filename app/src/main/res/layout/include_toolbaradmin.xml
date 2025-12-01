@@ -36,7 +36,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:contentDescription="Menú"
-                    android:src="@drawable/iconMenu"
+                    android:src="@drawable/iconmenu"
                     app:tint="@android:color/white" />
 
                 <TextView

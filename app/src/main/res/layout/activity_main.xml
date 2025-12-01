@@ -153,7 +153,7 @@
                             android:layout_marginRight="5dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
-                            app:srcCompat="@drawable/Hourglass" />
+                            app:srcCompat="@drawable/hourglass" />
 
                         <TextView
                             android:id="@+id/textView8"
@@ -204,7 +204,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_boton_confirmar"
                 android:text="Solicitar mi turno"
-                app:icon="@drawable/nuevoTurno"
+                app:icon="@drawable/nuevoturno"
                 app:iconGravity="textStart"
                 app:iconSize="25dp" />
 
@@ -220,7 +220,7 @@
                 android:textColor="@color/verde"
                 app:backgroundTint="@android:color/white"
                 app:cornerRadius="10dp"
-                app:icon="@drawable/buscrIcon"
+                app:icon="@drawable/buscricon"
                 app:iconGravity="textStart"
                 app:iconSize="25dp"
                 app:iconTint="@color/verde"
@@ -264,7 +264,7 @@
                             android:id="@+id/imageView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/hoyIcon" />
+                            app:srcCompat="@drawable/hoyicon" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -669,7 +669,7 @@
                             android:id="@+id/imageinfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/InfoPopup" />
+                            app:srcCompat="@drawable/infopopup" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -717,7 +717,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
-                            app:srcCompat="@drawable/Phoneicon" />
+                            app:srcCompat="@drawable/phoneicon" />
 
                         <TextView
                             android:id="@+id/textView2"
@@ -744,7 +744,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
-                            app:srcCompat="@drawable/Clockicon" />
+                            app:srcCompat="@drawable/clockicon" />
 
                         <TextView
                             android:id="@+id/txtCalificaciontexto"

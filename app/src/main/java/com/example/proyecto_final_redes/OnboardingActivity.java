@@ -1,5 +1,6 @@
 package com.example.proyecto_final_redes;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +42,7 @@ public class OnboardingActivity extends AppCompatActivity {
             "Te avisamos cuando se acerque tu turno. ¡Usa tu tiempo!",
     };
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

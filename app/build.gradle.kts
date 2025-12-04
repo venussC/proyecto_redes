@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -41,6 +40,21 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // CardView y ViewPager2
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    // Retrofit para llamadas HTTP
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp para logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    // Gson para JSON
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    // Para SharedPreferences encriptadas (guardar token)
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }

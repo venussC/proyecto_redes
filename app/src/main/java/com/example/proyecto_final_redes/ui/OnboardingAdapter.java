@@ -1,4 +1,4 @@
-package com.example.proyecto_final_redes;
+package com.example.proyecto_final_redes.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.proyecto_final_redes.R;
 
 public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder> {
 

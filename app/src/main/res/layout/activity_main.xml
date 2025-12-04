@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <!-- Toolbar superior -->
     <include
@@ -694,7 +694,7 @@
                             app:srcCompat="@drawable/iconubicacion" />
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/txtDireccionClinica"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -720,7 +720,7 @@
                             app:srcCompat="@drawable/phoneicon" />
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/txtTelefonoClinica"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -747,7 +747,7 @@
                             app:srcCompat="@drawable/clockicon" />
 
                         <TextView
-                            android:id="@+id/txtCalificaciontexto"
+                            android:id="@+id/txtHorarioClinica"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

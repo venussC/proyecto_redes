@@ -51,7 +51,6 @@
                 android:src="@drawable/logologin" />
 
             <!-- - NOMBRE DE USUARIO - -->
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,7 +79,6 @@
             </LinearLayout>
 
             <!-- - CORREO - -->
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +108,6 @@
             </LinearLayout>
 
             <!-- - CONTRASEÑA - -->
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,7 +137,6 @@
             </LinearLayout>
 
             <!-- - YA TIENES CUENTA - -->
-
             <TextView
                 android:id="@+id/txtIrLogin"
                 android:layout_width="wrap_content"
@@ -151,7 +147,6 @@
                 android:layout_marginTop="18dp" />
 
             <!-- - BOTÓN REGISTRARSE - -->
-
             <Button
                 android:id="@+id/btnRegistrarse"
                 android:layout_width="match_parent"
@@ -165,6 +160,16 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- Loader -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:indeterminate="true" />
 
 </RelativeLayout>
 

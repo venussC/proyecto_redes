@@ -14,24 +14,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_final_redes"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity android:name=".ui.RegistroActivity" android:exported="false"/>
+        <activity android:name=".ui.dashboardadminActivity" android:exported="false"/>
+        <activity android:name=".ui.Solicitar_turnoActivity" android:exported="false"/>
+
+        <!-- ❌ QUITAR EL LAUNCHER DE AQUI -->
+        <activity android:name=".ui.LoginActivity" android:exported="false"/>
+
+        <activity android:name=".ui.TurnoConfirmado" android:exported="false"/>
+
+        <!-- ✔ ÚNICO LAUNCHER -->
         <activity
-            android:name=".TurnoConfirmado"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
+            android:name=".ui.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".OnboardingActivity"
+
+        <activity android:name=".ui.OnboardingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity" />
+
+        <activity android:name=".ui.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -21,6 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Llamar este método DESPUÉS de setContentView()
      */
     protected void setupToolbar() {
+
         authManager = new AuthManager(this);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.mi_toolbar);
@@ -51,11 +52,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Si ya estamos en MainActivity, no hacer nada
         if (getClass().getSimpleName().equals("MainActivity")) {
             return;
-        }
-
+        }    else {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+    }
     }
 
     /**
@@ -76,10 +76,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             // Usuario NO logueado → Ir a Login
             // Si ya estamos ahí, no hacer nada
-            if (currentActivity.equals("LoginActivity")) {
+            if (currentActivity.equals("MainActivity")) {
                 return;
             }
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

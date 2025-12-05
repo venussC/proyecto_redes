@@ -101,24 +101,27 @@ public class LoginActivity extends AppCompatActivity {
                             loginResponse.getRefreshToken()
                     );
 
+                    // Reiniciar retrofit con token ya guardado
+                    RetrofitClient.resetInstance();
+                    RetrofitClient.getInstance(getApplicationContext());
+
+                    // 👈 recrear authApi con el nuevo retrofit
+                    authApi = RetrofitClient.getInstance(getApplicationContext()).getAuthApi();
+
                     // Guardar info del usuario
                     authManager.saveUserInfo(
-                            -1L,                       // userId (por ahora desconocido)
-                            null,                      // email (no se usa)
-                            usuario                    // username ingresado
+                            -1L,
+                            null,
+                            usuario
                     );
-
-
-
 
                     Log.d("LoginActivity", "Login exitoso. Token y datos guardados.");
 
                     Toast.makeText(LoginActivity.this, "Inicio exitoso", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

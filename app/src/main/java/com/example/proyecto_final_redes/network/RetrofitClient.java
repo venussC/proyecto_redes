@@ -70,6 +70,11 @@ public class RetrofitClient {
         return instance;
     }
 
+    public static synchronized void resetInstance() {
+        instance = null;
+    }
+
+
     // APIS
     public AuthApi getAuthApi() { return retrofit.create(AuthApi.class); }
     public SpecialityApi getSpecialityApi() { return retrofit.create(SpecialityApi.class); }

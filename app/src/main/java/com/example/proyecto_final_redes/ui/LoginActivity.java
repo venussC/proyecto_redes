@@ -1,30 +1,31 @@
 package com.example.proyecto_final_redes.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.proyecto_final_redes.R;
 import com.example.proyecto_final_redes.api.AuthApi;
-import com.example.proyecto_final_redes.network.RetrofitClient;
-import com.example.proyecto_final_redes.utils.AuthManager;
 import com.example.proyecto_final_redes.models.LoginRequest;
 import com.example.proyecto_final_redes.models.LoginResponse;
+import com.example.proyecto_final_redes.network.RetrofitClient;
+import com.example.proyecto_final_redes.utils.AuthManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etUsername, etPassword;
-    private Button btnLogin;
+    private EditText etUsuario, etContrasena;
+    private Button btnLogin, btnSaltarLogin;
     private TextView tvIrRegistro;
     private ProgressBar progressBar;
 
@@ -34,70 +35,87 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        // Inicializar API y manager
-        authApi = RetrofitClient.getInstance(this).getAuthApi();
         authManager = new AuthManager(this);
 
+        // Validar sesión antes de inflar layout
+        if (authManager.isLoggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
+        setContentView(R.layout.activity_login);
+
+        // Inicializar API
+        authApi = RetrofitClient.getInstance(this).getAuthApi();
+
         // Referencias XML
-        etUsername = findViewById(R.id.edtUsuario);
-        etPassword = findViewById(R.id.edtContrasena);
+        etUsuario = findViewById(R.id.edtUsuario);
+        etContrasena = findViewById(R.id.edtContrasena);
         btnLogin = findViewById(R.id.btnIniciarSesion);
+        btnSaltarLogin = findViewById(R.id.btnSaltarLogin);
         tvIrRegistro = findViewById(R.id.txtRegistrar);
         progressBar = findViewById(R.id.progressBar);
 
-        // Botón login
+        // Click listeners
         btnLogin.setOnClickListener(v -> realizarLogin());
-
-        // Ir a registro
         tvIrRegistro.setOnClickListener(v ->
-                startActivity(new Intent(LoginActivity.this, RegistroActivity.class)));
+                startActivity(new Intent(LoginActivity.this, RegistroActivity.class))
+        );
+        btnSaltarLogin.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        });
     }
 
     private void realizarLogin() {
-        String username = etUsername.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+        String usuario = etUsuario.getText().toString().trim();
+        String contrasena = etContrasena.getText().toString().trim();
 
-        // Validaciones
-        if (username.isEmpty()) {
-            etUsername.setError("Ingrese su usuario");
+        if (usuario.isEmpty()) {
+            etUsuario.setError("Ingrese su usuario");
             return;
         }
-        if (password.isEmpty()) {
-            etPassword.setError("Ingrese su contraseña");
+        if (contrasena.isEmpty()) {
+            etContrasena.setError("Ingrese su contraseña");
             return;
         }
 
-        // Mostrar loader
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         btnLogin.setEnabled(false);
 
-        LoginRequest request = new LoginRequest(username, password);
-
-        Call<LoginResponse> call = authApi.login(request);
-        call.enqueue(new Callback<LoginResponse>() {
+        LoginRequest request = new LoginRequest(usuario, contrasena);
+        authApi.login(request).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(ProgressBar.GONE);
                 btnLogin.setEnabled(true);
 
                 if (response.isSuccessful() && response.body() != null) {
+                    LoginResponse loginResponse = response.body();
 
                     // Guardar tokens
                     authManager.saveTokens(
-                            response.body().getAccessToken(),
-                            response.body().getRefreshToken()
+                            loginResponse.getAccessToken(),
+                            loginResponse.getRefreshToken()
                     );
 
+                    // Guardar info del usuario
+                    authManager.saveUserInfo(
+                            -1L,                       // userId (por ahora desconocido)
+                            null,                      // email (no se usa)
+                            usuario                    // username ingresado
+                    );
+
+
+
+
+                    Log.d("LoginActivity", "Login exitoso. Token y datos guardados.");
+
                     Toast.makeText(LoginActivity.this, "Inicio exitoso", Toast.LENGTH_SHORT).show();
-
-                    // Ir al dashboard
-                    Intent intent = new Intent(LoginActivity.this, dashboardadminActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-
                 } else {
                     Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                 }
@@ -105,9 +123,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(ProgressBar.GONE);
                 btnLogin.setEnabled(true);
-                Toast.makeText(LoginActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

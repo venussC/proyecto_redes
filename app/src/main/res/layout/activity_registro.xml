@@ -78,11 +78,11 @@
                     android:textColorHint="#888" />
             </LinearLayout>
 
-            <!-- - CORREO - -->
+            <!-- - NÚMERO DE TELÉFONO - -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Correo electrónico"
+                android:text="Número de teléfono"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:textSize="15sp"
@@ -96,15 +96,16 @@
                 android:layout_marginTop="8dp">
 
                 <EditText
-                    android:id="@+id/edtCorreo"
+                    android:id="@+id/edtTelefono"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/input_white"
-                    android:hint="Ingrese su correo electrónico"
-                    android:inputType="textEmailAddress"
+                    android:hint="Formato: 6XXX-XXXX"
+                    android:inputType="phone"
+                    android:maxLength="9"
                     android:padding="10dp"
                     android:textColor="#000"
-                    android:textColorHint="#888" />
+                    android:textColorHint="#888"/>
             </LinearLayout>
 
             <!-- - CONTRASEÑA - -->
@@ -172,4 +173,3 @@
         android:indeterminate="true" />
 
 </RelativeLayout>
-

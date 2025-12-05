@@ -44,7 +44,6 @@ public class OnboardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ❌ Quitamos EdgeToEdge y windowInsets (no los necesitas aquí)
         setContentView(R.layout.activity_onboarding);
 
         viewPager = findViewById(R.id.viewPagerOnboarding);
@@ -87,14 +86,8 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private void finishOnboarding() {
-        // Guardar preferencia
-        getSharedPreferences("AppPrefs", MODE_PRIVATE)
-                .edit()
-                .putBoolean("onboarding_complete", true)
-                .apply();
-
-        // Ir a MainActivity
-        startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
+        startActivity(new Intent(OnboardingActivity.this, LoginActivity.class));
         finish();
     }
+
 }

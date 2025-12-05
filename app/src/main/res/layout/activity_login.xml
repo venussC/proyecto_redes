@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#57C2B6">
@@ -115,10 +116,12 @@
                 android:id="@+id/txtRegistrar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="¿No tienes cuenta? Registrarse"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_marginTop="20dp" />
+                android:textSize="18sp" />
 
             <!-- Botón -->
             <Button
@@ -127,10 +130,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/input_white"
+                android:fontFamily="@font/montserrat_medium"
                 android:paddingVertical="14dp"
                 android:text="Iniciar Sesión"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <!-- Botón Skip -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaltarLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp"
+                android:text="Saltar login"
+                android:textColor="@color/verde"
+                android:textSize="16sp"
+                app:backgroundTint="#FFFFFF"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/celeste"
+                app:strokeWidth="2dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -55,7 +55,7 @@ public class AuthManager {
     // Verificar si el usuario está autenticado
     public boolean isLoggedIn() {
         String token = getAccessToken();
-        return token != null && !token.isEmpty();
+        return token != null && token.trim().length() > 10;
     }
 
     // Cerrar sesión (limpiar todos los datos)

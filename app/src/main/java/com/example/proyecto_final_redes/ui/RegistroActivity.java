@@ -1,13 +1,11 @@
 package com.example.proyecto_final_redes.ui;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +23,7 @@ import retrofit2.Response;
 
 public class RegistroActivity extends AppCompatActivity {
 
-    private EditText edtUsuario, edtCorreo, edtContrasena;
+    private EditText edtUsuario, edtTelefono, edtContrasena;
     private Button btnRegistrarse;
     private TextView txtIrLogin;
     private ProgressBar progressBar;
@@ -39,21 +37,11 @@ public class RegistroActivity extends AppCompatActivity {
 
         // --- Inicializar vistas ---
         edtUsuario = findViewById(R.id.edtUsuario);
-        edtCorreo = findViewById(R.id.edtCorreo);
+        edtTelefono = findViewById(R.id.edtTelefono);
         edtContrasena = findViewById(R.id.edtContrasena);
         btnRegistrarse = findViewById(R.id.btnRegistrarse);
         txtIrLogin = findViewById(R.id.txtIrLogin);
-
-        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
-        progressBar.setIndeterminate(true);
-
-        // Crear dinámicamente la ProgressBar sobre la pantalla
-        addContentView(progressBar,
-                new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                ));
-        progressBar.setVisibility(View.GONE);
+        progressBar = findViewById(R.id.progressBar);
 
         // --- Retrofit ---
         authApi = RetrofitClient.getInstance(this).getAuthApi();
@@ -71,36 +59,44 @@ public class RegistroActivity extends AppCompatActivity {
     private void registrarUsuario() {
 
         String usuario = edtUsuario.getText().toString().trim();
-        String correo = edtCorreo.getText().toString().trim();
-        String contraseña = edtContrasena.getText().toString().trim();
+        String telefono = edtTelefono.getText().toString().trim();
+        String contrasena = edtContrasena.getText().toString().trim();
 
-        // Validaciones
+        // --- Validaciones ---
         if (usuario.isEmpty()) {
             edtUsuario.setError("Ingrese un nombre de usuario");
             return;
         }
-        if (correo.isEmpty()) {
-            edtCorreo.setError("Ingrese un correo");
+
+        if (telefono.isEmpty()) {
+            edtTelefono.setError("Ingrese un número de teléfono");
             return;
         }
-        if (!correo.contains("@")) {
-            edtCorreo.setError("Correo inválido");
+
+        if (!telefono.matches("6\\d{3}-\\d{4}")) {
+            edtTelefono.setError("Formato inválido: 6XXX-XXXX");
             return;
         }
-        if (contraseña.isEmpty()) {
+
+        if (contrasena.isEmpty()) {
             edtContrasena.setError("Ingrese una contraseña");
             return;
         }
 
+        // Validación de contraseña: mínimo 10 caracteres, al menos mayúscula, minúscula, número y símbolo
+        if (!contrasena.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{10,}$")) {
+            edtContrasena.setError("Contraseña débil: mínimo 10 caracteres, con mayúscula, minúscula, número y símbolo");
+            return;
+        }
+
+        // --- Mostrar loader ---
         progressBar.setVisibility(View.VISIBLE);
         btnRegistrarse.setEnabled(false);
 
-        // Crear objeto Request
-        RegisterRequest request = new RegisterRequest(usuario, correo, contraseña);
+        // --- Crear objeto Request ---
+        RegisterRequest request = new RegisterRequest(usuario, contrasena, telefono);
 
-        Call<RegisterResponse> call = authApi.register(request);
-
-        call.enqueue(new Callback<RegisterResponse>() {
+        authApi.register(request).enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 progressBar.setVisibility(View.GONE);
@@ -108,10 +104,7 @@ public class RegistroActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-
-                    // Volver al login
-                    Intent i = new Intent(RegistroActivity.this, LoginActivity.class);
-                    startActivity(i);
+                    startActivity(new Intent(RegistroActivity.this, LoginActivity.class));
                     finish();
                 } else {
                     Toast.makeText(RegistroActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();

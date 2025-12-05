@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +19,14 @@ import com.example.proyecto_final_redes.R;
 import com.example.proyecto_final_redes.api.ClinicApi;
 import com.example.proyecto_final_redes.models.ClinicResponse;
 import com.example.proyecto_final_redes.network.RetrofitClient;
+import com.example.proyecto_final_redes.utils.AuthManager;
 import com.google.android.material.button.MaterialButton;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     // --- Información clínica ---
     TextView txtDireccionClinica, txtTelefonoClinica, txtHorarioClinica;
@@ -41,41 +43,109 @@ public class MainActivity extends AppCompatActivity {
     // API
     ClinicApi clinicApi;
 
+    // Auth (heredado de BaseActivity)
+    private ImageView btnUsuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
 
+        // Inicializar AuthManager (ya se hace en setupToolbar de BaseActivity)
+        // authManager ya está disponible
+
+        // Inflar layout
+        setContentView(R.layout.activity_main);
+        EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // --- Inicializar API ---
+        // ============================
+        //         TOOLBAR
+        // ============================
+        setupToolbar(); // Método heredado de BaseActivity
+
+        // ============================
+        //      Inicializar API
+        // ============================
         clinicApi = RetrofitClient.getInstance(this).getClinicApi();
 
-        // --- Referencias ---
+        // ============================
+        //    Referencias de vistas
+        // ============================
         txtDireccionClinica = findViewById(R.id.txtDireccionClinica);
         txtTelefonoClinica = findViewById(R.id.txtTelefonoClinica);
         txtHorarioClinica = findViewById(R.id.txtHorarioClinica);
-
         btnLlamar = findViewById(R.id.btnLlamar);
         btnSolicitarTurno = findViewById(R.id.btnSolicitarTurno);
         btnConsultarTurno = findViewById(R.id.btnConsultarTurno);
 
-        // --- Cargar datos de la clínica ---
+        // ============================
+        //     Cargar info clínica
+        // ============================
         cargarInfoClinica();
 
-        btnSolicitarTurno.setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, Solicitar_turnoActivity.class))
-        );
+        // ============================
+        //      Click listeners
+        // ============================
+        configurarBotones();
+    }
 
-        btnConsultarTurno.setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, TurnoConfirmado.class))
-        );
+    // ============================
+    //    Configurar Toolbar
+    // ============================
+    private void configurarToolbar() {
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.mi_toolbar);
+        setSupportActionBar(toolbar);
 
+        // Título "Inicio" → Regresar a MainActivity (refrescar)
+        TextView txtInicio = toolbar.findViewById(R.id.txtInicio);
+        txtInicio.setOnClickListener(v -> {
+            // Si ya estamos en MainActivity, solo refrescar
+            recreate();
+        });
+
+        // Botón Usuario → Login o Perfil según estado
+        btnUsuario = toolbar.findViewById(R.id.btnUsuario);
+        btnUsuario.setOnClickListener(v -> {
+            if (authManager.isLoggedIn()) {
+                // Usuario logueado → Ir a perfil/turnos
+                startActivity(new Intent(MainActivity.this, TurnoConfirmado.class));
+            } else {
+                // Usuario NO logueado → Ir a Login
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+    }
+
+    // ============================
+    //    Configurar Botones
+    // ============================
+    private void configurarBotones() {
+
+        // Botón Consultar Turno → Validar login
+        btnSolicitarTurno.setOnClickListener(v -> {
+            if (authManager.isLoggedIn()) {
+                startActivity(new Intent(MainActivity.this, Solicitar_turnoActivity.class));
+            } else {
+                Toast.makeText(this, "Debes iniciar sesión para solicitar un turno", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+
+        btnConsultarTurno.setOnClickListener(v -> {
+            if (authManager.isLoggedIn()) {
+                startActivity(new Intent(MainActivity.this, TurnoConfirmado.class));
+            } else {
+                Toast.makeText(this, "Debes iniciar sesión para consultar tus turnos", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+
+
+        // Botón Llamar → No requiere login
         btnLlamar.setOnClickListener(v -> llamarClinica());
     }
 
@@ -83,18 +153,17 @@ public class MainActivity extends AppCompatActivity {
     //   API: Información clínica
     // ============================
     private void cargarInfoClinica() {
-
+        // Llamada siempre, aunque no haya sesión
         clinicApi.getClinicById(1).enqueue(new Callback<ClinicResponse>() {
             @Override
             public void onResponse(Call<ClinicResponse> call, Response<ClinicResponse> response) {
-
                 if (!response.isSuccessful() || response.body() == null) {
-                    Toast.makeText(MainActivity.this, "Error cargando clínica", Toast.LENGTH_SHORT).show();
+                    Log.e("CLINIC_API", "Error: " + response.code() + " - " + response.message());
+                    Toast.makeText(MainActivity.this, "Error cargando información de la clínica", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 ClinicResponse info = response.body();
-
                 txtDireccionClinica.setText(info.getAddress());
                 txtTelefonoClinica.setText(info.getPhoneNumber());
                 txtHorarioClinica.setText("Ver horarios");
@@ -105,35 +174,48 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ClinicResponse> call, Throwable t) {
-                Log.e("CLINIC_API", "Error: " + t.getMessage());
+                Log.e("CLINIC_API", "Error al cargar clínica: " + t.getMessage());
+                Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     // ============================
     //        Llamar clínica
     // ============================
     private void llamarClinica() {
         String phone = txtTelefonoClinica.getText().toString();
-
         if (phone.isEmpty()) {
             Toast.makeText(this, "Teléfono no disponible", Toast.LENGTH_SHORT).show();
             return;
         }
-
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
         startActivity(intent);
     }
 
+    // ============================
+    //     onResume (refrescar UI)
+    // ============================
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        // Se borra el onboarding cada vez que la app se cierra por completo
-        getSharedPreferences("AppPrefs", MODE_PRIVATE)
-                .edit()
-                .remove("onboarding_complete")
-                .apply();
+    protected void onResume() {
+        super.onResume();
+        // Refrescar la UI cuando volvemos a esta actividad
+        // Por si el usuario se acaba de loguear
+        actualizarUISegunEstado();
     }
 
+    private void actualizarUISegunEstado() {
+        if (authManager.isLoggedIn()) {
+            // Usuario logueado: Cambiar icono de usuario o mostrar nombre
+            String username = authManager.getUserName();
+            if (username != null) {
+                // Aquí podrías cambiar el icono del btnUsuario o mostrar un saludo
+                Log.d("MainActivity", "Usuario logueado: " + username);
+            }
+        } else {
+            // Usuario NO logueado: Estado por defecto
+            Log.d("MainActivity", "Usuario NO logueado");
+        }
+    }
 }

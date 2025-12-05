@@ -15,8 +15,9 @@ import retrofit2.http.Path;
     public interface ClinicApi {
 
         // Crear clínica
-        @POST("/api/v1/clinic/clinic")
-        Call<ClinicRequest> createClinic(@Body ClinicRequest clinic);
+        @POST("api/v1/clinic/clinic")
+        Call<ClinicResponse> createClinic(@Body ClinicRequest clinic);
+
 
         // Obtener clínica por ID
         @GET("/api/v1/clinic/clinic/{id}")

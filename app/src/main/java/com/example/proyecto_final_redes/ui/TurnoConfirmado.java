@@ -1,6 +1,7 @@
 package com.example.proyecto_final_redes.ui;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,5 +23,11 @@ public class TurnoConfirmado extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        TextView txtTurno = findViewById(R.id.txtNumeroTurno);
+
+        String numeroTurno = getIntent().getStringExtra("NUMERO_TURNO");
+        txtTurno.setText("Tu número de turno es: " + numeroTurno);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.proyecto_final_redes.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +20,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.proyecto_final_redes.R;
 import com.example.proyecto_final_redes.api.ClinicApi;
 import com.example.proyecto_final_redes.models.ClinicResponse;
+import com.example.proyecto_final_redes.models.Schedule;
 import com.example.proyecto_final_redes.network.RetrofitClient;
 import com.example.proyecto_final_redes.utils.AuthManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +35,11 @@ public class MainActivity extends BaseActivity {
 
     // --- Información clínica ---
     TextView txtDireccionClinica, txtTelefonoClinica, txtHorarioClinica;
-    Button btnLlamar;
+
+    // --- Mostrar turno actual ---
+    TextView txtNumeroTurno;
+
+    Button btnLlamar, btnVerUbicacion;
 
     // Coordenadas
     double clinicaLat = 0.0;
@@ -82,8 +89,11 @@ public class MainActivity extends BaseActivity {
         txtTelefonoClinica = findViewById(R.id.txtTelefonoClinica);
         txtHorarioClinica = findViewById(R.id.txtHorarioClinica);
         btnLlamar = findViewById(R.id.btnLlamar);
+        btnVerUbicacion = findViewById(R.id.btnVerUbicacion);
         btnSolicitarTurno = findViewById(R.id.btnSolicitarTurno);
         btnConsultarTurno = findViewById(R.id.btnConsultarTurno);
+
+        txtNumeroTurno = findViewById(R.id.txtNumeroTurno);
 
         FloatingActionButton btnLogout = findViewById(R.id.btnLogout);
 
@@ -106,6 +116,8 @@ public class MainActivity extends BaseActivity {
         //      Click listeners
         // ============================
         configurarBotones();
+
+        configurarToolbar();
     }
 
     // ============================
@@ -119,7 +131,7 @@ public class MainActivity extends BaseActivity {
         TextView txtInicio = toolbar.findViewById(R.id.txtInicio);
         txtInicio.setOnClickListener(v -> {
             // Si ya estamos en MainActivity, solo refrescar
-            recreate();
+            finish();
         });
 
         // Botón Usuario → Login o Perfil según estado
@@ -159,6 +171,8 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        btnVerUbicacion.setOnClickListener(v -> abrirMapa());
+
 
         // Botón Llamar → No requiere login
         btnLlamar.setOnClickListener(v -> llamarClinica());
@@ -181,7 +195,29 @@ public class MainActivity extends BaseActivity {
                 ClinicResponse info = response.body();
                 txtDireccionClinica.setText(info.getAddress());
                 txtTelefonoClinica.setText(info.getPhoneNumber());
-                txtHorarioClinica.setText("Ver horarios");
+
+                Log.d("API_DEBUG", "Respuesta COMPLETA: " + new Gson().toJson(response.body()));
+                Log.d("API_DEBUG", "Horarios: " + new Gson().toJson(response.body().getSchedules()));
+
+
+                StringBuilder builder = new StringBuilder();
+
+                for (Schedule s : info.getSchedules()) {
+                    if (s.isClosed()) {
+                        builder.append(s.getWeekDay()).append(": Cerrado\n");
+                    } else {
+                        builder.append(s.getWeekDay())
+                                .append(": ")
+                                .append(s.getOpening())
+                                .append(" - ")
+                                .append(s.getClosing())
+                                .append("\n");
+                    }
+                }
+
+                txtHorarioClinica.setText(builder.toString());
+
+
 
                 clinicaLat = info.getLatitude();
                 clinicaLng = info.getLongitude();
@@ -218,6 +254,18 @@ public class MainActivity extends BaseActivity {
         // Refrescar la UI cuando volvemos a esta actividad
         // Por si el usuario se acaba de loguear
         actualizarUISegunEstado();
+
+        // =====================================================
+        // 🔥 CARGAR EL ULTIMO TURNO GUARDADO
+        // =====================================================
+        SharedPreferences prefs = getSharedPreferences("TURNO", MODE_PRIVATE);
+        String ultimoTurno = prefs.getString("ULTIMO_TURNO", null);
+
+        if (ultimoTurno != null) {
+            txtNumeroTurno.setText("# " + ultimoTurno);
+        } else {
+            txtNumeroTurno.setText("—");
+        }
     }
 
     private void actualizarUISegunEstado() {
@@ -248,5 +296,29 @@ public class MainActivity extends BaseActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+    private void abrirMapa() {
+        if (clinicaLat == 0.0 || clinicaLng == 0.0) {
+            Toast.makeText(this, "Ubicación no disponible", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String uri = "geo:" + clinicaLat + "," + clinicaLng +
+                "?q=" + clinicaLat + "," + clinicaLng + "(Clínica)";
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps"); // Forzar Google Maps
+
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            // Si no tiene Google Maps, abre cualquier app de mapas
+            Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            startActivity(fallbackIntent);
+        }
+    }
+
+
+
 
 }

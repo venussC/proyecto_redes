@@ -1,11 +1,19 @@
 package com.example.proyecto_final_redes.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Schedule {
+
     private int id;
     private int clinicId;
+
+    @SerializedName("day")
     private String weekDay;
+
     private String opening;
     private String closing;
+
+    @SerializedName("isClosed")
     private boolean isClosed;
 
     public int getId() { return id; }

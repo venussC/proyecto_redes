@@ -33,6 +33,15 @@ public class TurnController {
                 .body(response);
     }
 
+    @GetMapping()
+    public ResponseEntity<List<TurnResponse>> getAll() {
+        List<TurnResponse> response = turnService.getAllActive();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+
     @PatchMapping("/{id}/status")
     public ResponseEntity<TurnResponse> changeStatus(@PathVariable Long id,
                                                     @Valid @RequestBody UpdateTurnStatusRequest request) {

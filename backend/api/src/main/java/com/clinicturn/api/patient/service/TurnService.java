@@ -17,5 +17,7 @@ public interface TurnService {
 
     TurnResponse updateDoctor(Long id, UpdateTurnDoctorRequest request);
 
+    List<TurnResponse> getAllActive();
+
     List<DoctorResponse> getAvailableDoctorsByTurnId(Long id);
 }

@@ -39,16 +39,22 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/clinic").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{id}").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/schedule").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{clinicId}/schedules").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/room").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/room").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/clinic/room/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/room/{id}").authenticated()
+
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{clinicId}/rooms/available").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/speciality").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/speciality/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/speciality").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/clinic/doctor/{id}").hasRole("ADMIN")
@@ -56,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/active").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor/assign-room").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/patient/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn").hasRole("QUEUE_MANAGER")
                         .requestMatchers(HttpMethod.POST, "/api/v1/patient/turn").hasAnyRole("PATIENT", "RECEPTION")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/patient/turn/{id}/status").hasAnyRole("PATIENT", "QUEUE_MANAGER")
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/{id}/doctor").hasRole("QUEUE_MANAGER")

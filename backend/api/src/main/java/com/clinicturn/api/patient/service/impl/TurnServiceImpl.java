@@ -102,6 +102,19 @@ public class TurnServiceImpl implements TurnService {
     }
 
     @Override
+    public List<TurnResponse> getAllActive() {
+        return turnRepository.findAllActiveTurns().stream()
+                .map(turn -> {
+                    String doctorRoomNumber = null;
+                    if (turn.getDoctor() != null) {
+                        doctorRoomNumber = roomDoctorService.getRoomNumberFromDoctorByDoctorId(turn.getDoctor().getId());
+                    }
+                    return mapToResponse(turn, doctorRoomNumber);
+                })
+                .toList();
+    }
+
+    @Override
     public List<DoctorResponse> getAvailableDoctorsByTurnId(Long id) {
         Turn entity = validateAndReturnEntityById(id);
         return doctorService.getByIsActiveTrueAndSpecialityCode(entity.getSpeciality().getCode());

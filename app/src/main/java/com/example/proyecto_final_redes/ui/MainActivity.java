@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.example.proyecto_final_redes.models.ClinicResponse;
 import com.example.proyecto_final_redes.network.RetrofitClient;
 import com.example.proyecto_final_redes.utils.AuthManager;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +47,7 @@ public class MainActivity extends BaseActivity {
 
     // Auth (heredado de BaseActivity)
     private ImageView btnUsuario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,18 @@ public class MainActivity extends BaseActivity {
         btnLlamar = findViewById(R.id.btnLlamar);
         btnSolicitarTurno = findViewById(R.id.btnSolicitarTurno);
         btnConsultarTurno = findViewById(R.id.btnConsultarTurno);
+
+        FloatingActionButton btnLogout = findViewById(R.id.btnLogout);
+
+// Mostrar solo si hay login
+        if (authManager.isLoggedIn()) {
+            btnLogout.setVisibility(View.VISIBLE);
+        } else {
+            btnLogout.setVisibility(View.GONE);
+        }
+
+        btnLogout.setOnClickListener(v -> cerrarSesion());
+
 
         // ============================
         //     Cargar info clínica
@@ -218,4 +233,20 @@ public class MainActivity extends BaseActivity {
             Log.d("MainActivity", "Usuario NO logueado");
         }
     }
+
+    private void cerrarSesion() {
+        // Borrar sesión
+        authManager.logout();
+
+        // Reset Retrofit para quitar los tokens
+        RetrofitClient.resetInstance();
+
+        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+
+        // Redirigir a Login
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 }

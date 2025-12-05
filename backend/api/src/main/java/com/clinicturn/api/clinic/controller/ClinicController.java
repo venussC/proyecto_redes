@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/clinic")
@@ -22,6 +24,14 @@ public class ClinicController {
         ClinicResponse response = clinicService.create(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    @GetMapping("/clinic")
+    public ResponseEntity<List<ClinicResponse>> getAll() {
+        List<ClinicResponse> response = clinicService.getAll();
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(response);
     }
 

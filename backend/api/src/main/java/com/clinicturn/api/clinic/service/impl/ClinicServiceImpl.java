@@ -54,6 +54,13 @@ public class ClinicServiceImpl implements ClinicService {
         }
     }
 
+    @Override
+    public List<ClinicResponse> getAll() {
+        return clinicRepository.findAll().stream()
+                .map(this::mapFromEntityToResponse)
+                .toList();
+    }
+
     private void validateExistsByName(String name) {
         if (clinicRepository.existsByName(name)) {
             throw new ResourceAlreadyExistsException("Clinic already exists with name: " + name);

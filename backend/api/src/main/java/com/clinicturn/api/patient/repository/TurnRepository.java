@@ -4,6 +4,7 @@ import com.clinicturn.api.patient.model.Turn;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,11 @@ public interface TurnRepository extends JpaRepository<Turn, Long> {
     """)
     List<Turn> findAllActiveTurns();
 
+    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    Optional<Turn> findTopByStatus_NameOrderByCalledAtDesc(String statusName);
+
+    Optional<Turn> findTopByCalledAtIsNotNullOrderByCalledAtDesc();
+
+    long countByStatus_Name(String statusName);
 }

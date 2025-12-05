@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/clinic").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic/{id}").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/clinic/clinic").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/schedule").hasRole("ADMIN")
 
@@ -61,9 +62,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinic/doctor/active").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinic/doctor/assign-room").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/patient/me").authenticated()
+
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn").hasRole("QUEUE_MANAGER")
                         .requestMatchers(HttpMethod.POST, "/api/v1/patient/turn").hasAnyRole("PATIENT", "RECEPTION")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/count").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/count/waiting").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/count/seen").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/last-called").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/patient/turn/{id}/status").hasAnyRole("PATIENT", "QUEUE_MANAGER")
                         .requestMatchers(HttpMethod.GET, "/api/v1/patient/turn/{id}/doctor").hasRole("QUEUE_MANAGER")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/patient/turn/{id}/doctor").hasRole("QUEUE_MANAGER")

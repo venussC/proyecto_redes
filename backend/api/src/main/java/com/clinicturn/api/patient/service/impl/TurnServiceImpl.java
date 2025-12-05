@@ -12,6 +12,8 @@ import com.clinicturn.api.common.exception.ResourceNotFoundException;
 import com.clinicturn.api.patient.dto.request.CreateTurnRequest;
 import com.clinicturn.api.patient.dto.request.UpdateTurnDoctorRequest;
 import com.clinicturn.api.patient.dto.request.UpdateTurnStatusRequest;
+import com.clinicturn.api.patient.dto.response.PacientCountResponse;
+import com.clinicturn.api.patient.dto.response.TurnCountResponse;
 import com.clinicturn.api.patient.dto.response.TurnResponse;
 import com.clinicturn.api.patient.exception.TurnStillActiveException;
 import com.clinicturn.api.patient.model.Patient;
@@ -29,7 +31,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +90,10 @@ public class TurnServiceImpl implements TurnService {
             }
         }
         turnRepository.save(turn);
-        String doctorRoomNumber = roomDoctorService.getRoomNumberFromDoctorByDoctorId(turn.getDoctor().getId());
+        String doctorRoomNumber = null;
+        if (turn.getDoctor() != null) {
+            doctorRoomNumber = roomDoctorService.getRoomNumberFromDoctorByDoctorId(turn.getDoctor().getId());
+        }
         return mapToResponse(turn, doctorRoomNumber);
     }
 
@@ -118,6 +126,30 @@ public class TurnServiceImpl implements TurnService {
     public List<DoctorResponse> getAvailableDoctorsByTurnId(Long id) {
         Turn entity = validateAndReturnEntityById(id);
         return doctorService.getByIsActiveTrueAndSpecialityCode(entity.getSpeciality().getCode());
+    }
+
+    @Override
+    public PacientCountResponse getPacientCount() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay().truncatedTo(ChronoUnit.MICROS);
+        LocalDateTime end = today.plusDays(1).atStartOfDay().truncatedTo(ChronoUnit.MICROS);
+        return new PacientCountResponse(turnRepository.countByCreatedAtBetween(start, end));
+    }
+
+    @Override
+    public TurnResponse getLastCalledTurn() {
+        Optional<Turn> lastTurnOpt = turnRepository.findTopByCalledAtIsNotNullOrderByCalledAtDesc();
+        return lastTurnOpt.map(turn -> mapToResponse(turn, null)).orElse(null);
+    }
+
+    @Override
+    public TurnCountResponse countWaitingTurns() {
+        return new TurnCountResponse(turnRepository.countByStatus_Name("WAITING"));
+    }
+
+    @Override
+    public TurnCountResponse countSeenTurns() {
+        return new TurnCountResponse(turnRepository.countByStatus_Name("SEEN"));
     }
 
     private List<String> getRolesFromAuthentication(Authentication authentication) {

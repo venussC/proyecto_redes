@@ -4,6 +4,8 @@ import com.clinicturn.api.clinic.dto.response.DoctorResponse;
 import com.clinicturn.api.patient.dto.request.CreateTurnRequest;
 import com.clinicturn.api.patient.dto.request.UpdateTurnDoctorRequest;
 import com.clinicturn.api.patient.dto.request.UpdateTurnStatusRequest;
+import com.clinicturn.api.patient.dto.response.PacientCountResponse;
+import com.clinicturn.api.patient.dto.response.TurnCountResponse;
 import com.clinicturn.api.patient.dto.response.TurnResponse;
 import org.springframework.security.core.Authentication;
 
@@ -20,4 +22,12 @@ public interface TurnService {
     List<TurnResponse> getAllActive();
 
     List<DoctorResponse> getAvailableDoctorsByTurnId(Long id);
+
+    PacientCountResponse getPacientCount();
+
+    TurnResponse getLastCalledTurn();
+
+    TurnCountResponse countWaitingTurns();
+
+    TurnCountResponse countSeenTurns();
 }

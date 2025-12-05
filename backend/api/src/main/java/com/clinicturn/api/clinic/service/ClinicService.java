@@ -5,6 +5,8 @@ import com.clinicturn.api.clinic.dto.response.ClinicFullResponse;
 import com.clinicturn.api.clinic.dto.response.ClinicResponse;
 import com.clinicturn.api.clinic.model.Clinic;
 
+import java.util.List;
+
 public interface ClinicService {
 
     ClinicResponse create(CreateClinicRequest request);
@@ -14,4 +16,6 @@ public interface ClinicService {
     Clinic findByIdAndReturnEntity(Long id);
 
     void assertExistsById(Long id);
+
+    List<ClinicResponse> getAll();
 }

@@ -4,6 +4,8 @@ import com.clinicturn.api.clinic.dto.response.DoctorResponse;
 import com.clinicturn.api.patient.dto.request.CreatePatientTurnRequest;
 import com.clinicturn.api.patient.dto.request.UpdateTurnDoctorRequest;
 import com.clinicturn.api.patient.dto.request.UpdateTurnStatusRequest;
+import com.clinicturn.api.patient.dto.response.PacientCountResponse;
+import com.clinicturn.api.patient.dto.response.TurnCountResponse;
 import com.clinicturn.api.patient.dto.response.TurnResponse;
 import com.clinicturn.api.patient.service.CreatePatientTurnService;
 import com.clinicturn.api.patient.service.TurnService;
@@ -41,6 +43,37 @@ public class TurnController {
                 .body(response);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<PacientCountResponse> getPacientCount() {
+        PacientCountResponse response = turnService.getPacientCount();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/count/waiting")
+    public ResponseEntity<TurnCountResponse> getTurnCountByWaitingStatus() {
+        TurnCountResponse response = turnService.countWaitingTurns();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/count/seen")
+    public ResponseEntity<TurnCountResponse> getTurnCountBySeenStatus() {
+        TurnCountResponse response = turnService.countSeenTurns();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/last-called")
+    public ResponseEntity<TurnResponse> getLastTurnCalled() {
+        TurnResponse response = turnService.getLastCalledTurn();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<TurnResponse> changeStatus(@PathVariable Long id,
